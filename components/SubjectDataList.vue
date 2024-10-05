@@ -1,30 +1,41 @@
 <template>
   <div>
 
-    <DataTable :value="subjects" :filters="filters"  ref="dt" size="small" showGridlines class="p-8"
-               :globalFilterFields="['name', 'category', 'credits', 'evaluationForm', 'semester']">
+    <Toolbar>
+      <template #start>
+        <div class="card flex gap-4 ml-6">
+        <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Studijų programa"
+                class="w-full"/>
+        <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Tvarkaraštis"
+                class="w-full"/>
+        </div>
+      </template>
+
+      <template #end>
+        <div class="card flex mr-6">
+        <FileUpload mode="basic" accept="image/*" :maxFileSize="1000000" label="Import" customUpload chooseLabel="Įkelti dalykus" class="mr-2" auto :chooseButtonProps="{ severity: 'secondary' }" />
+        <Button label="Eksportuoti į Excel" icon="pi pi-upload" severity="secondary" @click="exportCSV($event)" />
+        </div>
+      </template>
+    </Toolbar>
+
+    <DataTable
+        v-model:editingRows="editingRows"
+        class="text-md ml-6 mr-6 mb-6"
+        dataKey="id"
+        striped-rows
+        :value="subjects"
+        :filters="filters"
+        editMode="row"
+        @row-edit-save="onRowEditSave"
+        ref="dt"
+        size="small"
+        tableStyle="min-width: 70rem"
+        :globalFilterFields="['name', 'category', 'credits', 'evaluationForm', 'semester']"
+    >
       <template #header>
 
-        <div class="flex flex-row gap-3 mt-2">
-
-          <div class="card flex gap-4">
-            <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Studijų programa"
-                    class="w-full"/>
-            <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Tvarkaraštis"
-                    class="w-full"/>
-
-          </div>
-
-
-
-
-          <!--          <MultiSelect :modelValue="selectedColumns" :options="columns" optionLabel="header"-->
-          <!--                       @update:modelValue="onToggle"-->
-          <!--                       display="chip" placeholder="Pasirinkite stulpelius" class="mt-2 mr-4"/>-->
-          <Button icon="pi pi-external-link" label="Eksportuoti į Excel" @click="exportCSV($event)"/>
-
-        </div>
-        <div class="p-4 pl-0">
+        <div class="pl-1 mt-3 mb-3">
           <IconField>
             <InputIcon>
               <i class="pi pi-search"/>
@@ -34,8 +45,22 @@
         </div>
       </template>
 
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
+      <Column v-for="(col, index) of selectedColumns"
+              :field="col.field"
+              :header="col.header"
+              sortable
+              :key="col.field + '_' + index"
+
+      >
+        <template #editor="{ data, field }">
+          <InputText v-if="field === 'name'" v-model="data[field]" fluid />
+<!--          <InputNumber v-if="field === 'credits'" v-model="data[field]" mode="decimal" minFractionDigits="0" />-->
+<!--          <Select v-if="field === 'lecturers'" v-model="data[field]" :options="lecturers" optionLabel="label" optionValue="value" placeholder="Choose Form" fluid />-->
+        </template>
+
+
+      </Column>
+      <Column :rowEditor="true" ></Column>
 
 
     </DataTable>
@@ -43,7 +68,6 @@
 </template>
 
 <script setup lang="ts">
-import {ref, onMounted} from 'vue';
 import {SubjectService} from '~/service/SubjectService';
 import {FilterMatchMode, FilterOperator} from '@primevue/core/api';
 import type {Subject} from "~/data/subject";
@@ -54,12 +78,20 @@ onMounted(() => {
 
 const subjects = ref<Subject[]>([]);
 
-
+const editingRows = ref([]);
+const statuses = ref([
+  { label: 'In Stock', value: 'INSTOCK' },
+  { label: 'Low Stock', value: 'LOWSTOCK' },
+  { label: 'Out of Stock', value: 'OUTOFSTOCK' }
+]);
 const filters = ref();
 filters.value = {
   global: {value: null, matchMode: FilterMatchMode.CONTAINS},
 }
-
+const onRowEditSave = (event) => {
+  let { newData, index } = event;
+  subjects.value[index] = newData;
+};
 
 const columns = ref([
   {field: 'name', header: 'Dalyko (modulio) pavadinimas'},
@@ -83,7 +115,7 @@ const columns = ref([
   {field: 'courseWorkHoursCount', header: 'CW'},
   {field: 'examHours', header: 'EH'},
   {field: 'otherNonContactCount', header: 'ON'},
-  {field: 'lecturers', header: 'Lecturers'},
+  {field: 'lecturers', header: 'D'},
 ]);
 const selectedColumns = ref(columns.value);
 
