@@ -1,53 +1,39 @@
 <template>
   <div>
 
-    <div class="card flex gap-4 p-4">
-      <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Studijų programa"
-              class="w-full md:w-56"/>
-      <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Kursas"
-              class="w-full md:w-56"/>
-      <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Grupė"
-              class="w-full md:w-56"/>
-      <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Tvarkaraštis"
-              class="w-full md:w-56"/>
-
-    </div>
-
-
-    <DataTable :value="products" size="small" showGridlines class="pl-5" :globalFilterFields="['name', 'country.name', 'representative.name', 'balance', 'status']">
+    <DataTable :value="subjects" :filters="filters"  ref="dt" size="small" showGridlines class="p-8"
+               :globalFilterFields="['name', 'category', 'credits', 'evaluationForm', 'semester']">
       <template #header>
 
-        <div class="d-flex justify-between align-items-center">
+        <div class="flex flex-row gap-3 mt-2">
 
-          <IconField>
-            <InputIcon>
-              <i class="pi pi-search" />
-            </InputIcon>
-            <InputText v-model="filters['global'].value" placeholder="Keyword Search" />
-          </IconField>
+          <div class="card flex gap-4">
+            <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Studijų programa"
+                    class="w-full"/>
+            <Select v-model="selectedCity" :options="cities" showClear optionLabel="name" placeholder="Tvarkaraštis"
+                    class="w-full"/>
 
-            <MultiSelect :modelValue="selectedColumns" :options="columns" optionLabel="header"
-                         @update:modelValue="onToggle"
-                         display="chip" placeholder="Pasirinkite stulpelius" class="mt-2 mr-4"/>
-            <Button icon="pi pi-external-link" label="Eksportuoti į Excel" @click="exportCSV($event)"/>
+          </div>
+
+
+
+
+          <!--          <MultiSelect :modelValue="selectedColumns" :options="columns" optionLabel="header"-->
+          <!--                       @update:modelValue="onToggle"-->
+          <!--                       display="chip" placeholder="Pasirinkite stulpelius" class="mt-2 mr-4"/>-->
+          <Button icon="pi pi-external-link" label="Eksportuoti į Excel" @click="exportCSV($event)"/>
 
         </div>
+        <div class="p-4 pl-0">
+          <IconField>
+            <InputIcon>
+              <i class="pi pi-search"/>
+            </InputIcon>
+            <InputText v-model="filters['global'].value" placeholder="Ieškoti pagal pavadinimą" class="w-full"/>
+          </IconField>
+        </div>
       </template>
-      <Column field="code" header="Code"/>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
-      <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
-              :key="col.field + '_' + index"></Column>
+
       <Column v-for="(col, index) of selectedColumns" :field="col.field" :header="col.header"
               :key="col.field + '_' + index"></Column>
 
@@ -58,13 +44,16 @@
 
 <script setup lang="ts">
 import {ref, onMounted} from 'vue';
-import {ProductService} from '@/service/ProductService';
-import { FilterMatchMode, FilterOperator } from '@primevue/core/api';
+import {SubjectService} from '~/service/SubjectService';
+import {FilterMatchMode, FilterOperator} from '@primevue/core/api';
+import type {Subject} from "~/data/subject";
+
 onMounted(() => {
-  ProductService.getProductsMini().then((data) => (products.value = data));
-
-
+  subjects.value = SubjectService.getSubjects();
 });
+
+const subjects = ref<Subject[]>([]);
+
 
 const filters = ref();
 filters.value = {
@@ -73,12 +62,31 @@ filters.value = {
 
 
 const columns = ref([
-  {field: 'name', header: 'Name'},
-  {field: 'category', header: 'Category'},
-  {field: 'quantity', header: 'Quantity'}
+  {field: 'name', header: 'Dalyko (modulio) pavadinimas'},
+  {field: 'semester', header: 'S'},
+  {field: 'credits', header: 'Kr'},
+  {field: 'evaluationForm', header: 'V'},
+  {field: 'lectureHours', header: 'P'},
+  {field: 'practiceHours', header: 'Pr'},
+  {field: 'remoteLectureHours', header: 'NP'},
+  {field: 'remotePracticeHours', header: 'NPr'},
+  {field: 'selfStudyHours', header: 'S'},
+  {field: 'lecturesCount', header: 'LC'},
+  {field: 'finalProjectExamCount', header: 'FP'},
+  {field: 'otherContactHoursCount', header: 'OC'},
+  {field: 'consultationCount', header: 'CC'},
+  {field: 'gradingNumberCount', header: 'GN'},
+  {field: 'gradingHoursCount', header: 'GH'},
+  {field: 'homeworkHoursCount', header: 'HH'},
+  {field: 'practiceReportHoursCount', header: 'PR'},
+  {field: 'remoteTeachingHoursCount', header: 'RT'},
+  {field: 'courseWorkHoursCount', header: 'CW'},
+  {field: 'examHours', header: 'EH'},
+  {field: 'otherNonContactCount', header: 'ON'},
+  {field: 'lecturers', header: 'Lecturers'},
 ]);
 const selectedColumns = ref(columns.value);
-const products = ref();
+
 const onToggle = (val) => {
   selectedColumns.value = columns.value.filter(col => val.includes(col));
 };
