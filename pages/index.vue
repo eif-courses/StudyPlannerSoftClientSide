@@ -1,10 +1,14 @@
 <script setup lang="ts">
 
-import SubjectDataList from "~/components/SubjectDataList.vue";
 </script>
 
 <template>
-  <SubjectDataList/>
+
+  <GroupTimetable/>
+
+
+
+
 </template>
 
 <style scoped>
