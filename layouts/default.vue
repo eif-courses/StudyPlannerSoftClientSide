@@ -1,8 +1,6 @@
 
 <template>
-  <div class="card">
-    <Menubar :model="items" />
-  </div>
+
   <slot/>
 
 </template>
