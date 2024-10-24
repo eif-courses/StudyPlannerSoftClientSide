@@ -63,6 +63,27 @@ const finalClassrooms = ref<TimetableEntry[]>([]);
 const groupedClassrooms = ref<{ [classid: string]: { [date: string]: { [starttime: string]: TimetableEntry[] } } }>({});
 const timeSlots = ref<string[]>([]); // To hold unique time slots
 
+
+// Function to add minutes to a time string
+function addMinutes(timeString: string, minutes: number): string {
+  const [hours, minutesPart] = timeString.split(':').map(Number);
+  const totalMinutes = hours * 60 + minutesPart + minutes;
+  const newHours = Math.floor(totalMinutes / 60) % 24; // Wrap around to 24-hour format
+  const newMinutes = totalMinutes % 60;
+  return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+}
+
+// Computed property to generate time ranges
+const timeRanges = computed(() => {
+  return timeSlots.value.map((timeSlot: string) => { // Specify the type of timeSlot
+    const startTime = timeSlot; // Starting time
+    const endTime = addMinutes(startTime, 90); // Adding 1 hour and 30 minutes
+    return `${startTime} - ${endTime}`;
+  });
+});
+
+
+
 // Function to fetch classroom data for multiple IDs
 const fetchClassroomData = async (classroomIds: string[]) => {
   try {
@@ -94,29 +115,31 @@ const fetchClassroomData = async (classroomIds: string[]) => {
 // Function to fetch group IDs
 const fetchGroupIds = async () => {
   try {
-    const { data, error } = await useFetch<Group[]>('https://onlinecourses-production.up.railway.app/timetable/groups/ids');
+    const response = await fetch('https://onlinecourses-production.up.railway.app/timetable/groups/ids');
 
-    // Check if there was an error fetching data
-    if (error.value) {
-      console.error('Error fetching group IDs:', error.value);
+    // Check if the response is OK (status in the range 200-299)
+    if (!response.ok) {
+      throw new Error(`HTTP error! status: ${response.status}`);
+    }
+
+    const data = await response.json(); // Parse JSON from the response
+    console.log('API Response:', data); // Log the response for debugging
+
+    // Check if data is an array
+    if (Array.isArray(data)) {
+      // Map over the data to extract group IDs
+      return data.map(group => group.id);
+    } else {
+      console.error('Unexpected data structure:', data);
       return [];
     }
-
-    // Check if data is defined and is an array
-    if (data.value && Array.isArray(data.value)) {
-      // Extract and return only the IDs from the group objects
-      return data.value.map(group => group.id) || [];
-    } else {
-      console.error('Unexpected data structure:', data.value);
-      return []; // Return an empty array if data is not in expected format
-    }
-  } catch (e) {
-    console.error('Failed to fetch group IDs:', e);
+  } catch (error) {
+    console.error('Failed to fetch group IDs:', error);
     return [];
   }
 };
 
-// Function to group and sort classrooms
+
 const groupAndSortClassrooms = () => {
   // Reset groupedClassrooms
   groupedClassrooms.value = {};
@@ -135,6 +158,7 @@ const groupAndSortClassrooms = () => {
       if (!groupedClassrooms.value[classid][entryDate]) {
         groupedClassrooms.value[classid][entryDate] = {};
       }
+
       // Create a unique key for both start and end times
       const timeKey = `${entryStartTime}-${entryEndTime}`;
 
@@ -142,8 +166,13 @@ const groupAndSortClassrooms = () => {
         groupedClassrooms.value[classid][entryDate][timeKey] = [];
       }
 
-      // Push the entry into the appropriate group
-      groupedClassrooms.value[classid][entryDate][timeKey].push(entry);
+      // Check if the entry is already added to avoid duplicates
+      const existingEntries = groupedClassrooms.value[classid][entryDate][timeKey];
+      if (!existingEntries.some(existingEntry => existingEntry.subjectid === entry.subjectid)) {
+        // Push the entry into the appropriate group
+        existingEntries.push(entry);
+      }
+
       // Add the start time to timeSlots if it doesn't exist
       if (!timeSlots.value.includes(entryStartTime)) {
         timeSlots.value.push(entryStartTime);
@@ -175,10 +204,10 @@ onMounted(async () => {
     <template v-for="(classEntries, classid) in groupedClassrooms" :key="classid">
       <div class="overflow-hidden">
         <table class="timetable-table min-w-full">
-          <thead class="bg-blue-500 text-white">
+          <thead class="bg-black text-white">
           <tr>
             <th class="border">{{ classid }}</th>
-            <th class="table-header border px-4 py-2 font-bold" v-for="(timeSlot, index) in timeSlots" :key="index">{{ timeSlot }}</th>
+            <th class="table-header border px-4 py-2 font-bold" v-for="(timeSlot, index) in timeRanges" :key="index">{{ timeSlot }}</th>
           </tr>
           </thead>
 
@@ -206,30 +235,25 @@ onMounted(async () => {
 
 <style scoped>
 
-
-/* Custom styles to fit 4K display */
 .timetable-table {
-  width: 100%; /* Take full width */
-  border-collapse: collapse; /* Remove gaps between cells */
-  //background-color: black; /* Black background for high contrast */
+  width: 100%;
+  border-collapse: collapse;
+
 }
 
 .table-header {
-  font-size: 0.65rem; /* Larger font for better readability */
-  font-weight: lighter; /* Bold header text */
-  //background-color: #333; /* Dark gray background for header */
-  color: black; /* White text for contrast */
-  border: 1px solid white; /* White borders for better visibility */
+  font-size: 0.65rem;
+  font-weight: bold;
+  border: 1px solid white;
 }
 
 .table-cell {
-  font-size: 0.65rem; /* Increase font size for better visibility */
+  font-size: 0.65rem;
   font-weight: lighter;
-  height: 77px; /* Increased height for visibility */
-  //text-align: center; /* Center align text */
-  //background-color: black; /* Black background */
-  color: black; /* White text for contrast */
-  border: 0.01rem solid gray; /* White borders between cells */
-  //padding: 10px; /* Add some padding for readability */
+  height: 77px;
+
+
+  color: black;
+  border: 0.01rem solid gray;
 }
 </style>
