@@ -12,6 +12,8 @@
   "dependencies": {
     "@nuxtjs/tailwindcss": "^6.12.1",
     "@primevue/themes": "^4.0.7",
+    "date-fns": "^4.1.0",
+    "firebase": "^11.0.1",
     "nuxt": "^3.13.0",
     "primeicons": "^7.0.0",
     "primevue": "^4.0.7",
