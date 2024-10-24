@@ -57,12 +57,12 @@ const timetables = ref([
 <template>
   <div class="grid grid-cols-4 gap-2">
     <!-- Repeat this block for each main column (4 in total) -->
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-      <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+    <div class="overflow-hidden">
+      <table class="timetable-table min-w-full">
+        <thead class="bg-blue-500 text-white">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
-          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="border">PI24A</th>
+          <th class="table-header border px-4 py-2 font-bold">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
           <th class="table-header border px-4 py-2">14:15-15:45</th>
@@ -295,9 +295,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -532,9 +532,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -769,958 +769,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
-          <th class="table-header border px-4 py-2">8:30-10:00</th>
-          <th class="table-header border px-4 py-2">10:15-11:45</th>
-          <th class="table-header border px-4 py-2">12:30-14:00</th>
-          <th class="table-header border px-4 py-2">14:15-15:45</th>
-          <th class="table-header border px-4 py-2">16:00-17:30</th>
-          <th class="table-header border px-4 py-2">17:45-19:15</th>
-          <th class="table-header border px-4 py-2">19:30-20:45</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Weekdays -->
-        <tr>
-          <td class="table-cell border px-4">Pirmadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Antradienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Trečiadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Penktadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-      <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
-        <tr>
-          <th class="border text-blue-600">PI24A</th>
-          <th class="table-header border px-4 py-2">8:30-10:00</th>
-          <th class="table-header border px-4 py-2">10:15-11:45</th>
-          <th class="table-header border px-4 py-2">12:30-14:00</th>
-          <th class="table-header border px-4 py-2">14:15-15:45</th>
-          <th class="table-header border px-4 py-2">16:00-17:30</th>
-          <th class="table-header border px-4 py-2">17:45-19:15</th>
-          <th class="table-header border px-4 py-2">19:30-20:45</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Weekdays -->
-        <tr>
-          <td class="table-cell border px-4">Pirmadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Antradienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Trečiadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Penktadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-      <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
-        <tr>
-          <th class="border text-blue-600">PI24A</th>
-          <th class="table-header border px-4 py-2">8:30-10:00</th>
-          <th class="table-header border px-4 py-2">10:15-11:45</th>
-          <th class="table-header border px-4 py-2">12:30-14:00</th>
-          <th class="table-header border px-4 py-2">14:15-15:45</th>
-          <th class="table-header border px-4 py-2">16:00-17:30</th>
-          <th class="table-header border px-4 py-2">17:45-19:15</th>
-          <th class="table-header border px-4 py-2">19:30-20:45</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Weekdays -->
-        <tr>
-          <td class="table-cell border px-4">Pirmadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Antradienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Trečiadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Penktadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-      <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
-        <tr>
-          <th class="border text-blue-600">PI24A</th>
-          <th class="table-header border px-4 py-2">8:30-10:00</th>
-          <th class="table-header border px-4 py-2">10:15-11:45</th>
-          <th class="table-header border px-4 py-2">12:30-14:00</th>
-          <th class="table-header border px-4 py-2">14:15-15:45</th>
-          <th class="table-header border px-4 py-2">16:00-17:30</th>
-          <th class="table-header border px-4 py-2">17:45-19:15</th>
-          <th class="table-header border px-4 py-2">19:30-20:45</th>
-        </tr>
-        </thead>
-        <tbody>
-        <!-- Weekdays -->
-        <tr>
-          <td class="table-cell border px-4">Pirmadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Antradienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Trečiadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        <tr>
-          <td class="table-cell border px-4 py-2">Penktadienis</td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-              <div class="border-t">Duomenų bazių valdymas, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Programavimas kalba Java, 420A</div>
-
-            </div>
-          </td>
-          <td class="table-cell border px-2">
-            <div class="flex flex-col">
-              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
-            </div>
-          </td>
-        </tr>
-        </tbody>
-      </table>
-    </div>
-    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
-      <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
-        <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -1956,9 +1007,9 @@ const timetables = ref([
 
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -2193,9 +1244,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -2430,9 +1481,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -2667,9 +1718,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -2905,9 +1956,9 @@ const timetables = ref([
 
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -3142,9 +2193,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -3379,9 +2430,9 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -3616,9 +2667,1906 @@ const timetables = ref([
     </div>
     <div class="bg-white shadow-lg rounded-lg overflow-hidden">
       <table class="timetable-table min-w-full border-collapse">
-        <thead class="bg-gray-200">
+        <thead class="bg-black">
         <tr>
-          <th class="border text-blue-600">PI24A</th>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
+          <th class="table-header border px-4 py-2">8:30-10:00</th>
+          <th class="table-header border px-4 py-2">10:15-11:45</th>
+          <th class="table-header border px-4 py-2">12:30-14:00</th>
+          <th class="table-header border px-4 py-2">14:15-15:45</th>
+          <th class="table-header border px-4 py-2">16:00-17:30</th>
+          <th class="table-header border px-4 py-2">17:45-19:15</th>
+          <th class="table-header border px-4 py-2">19:30-20:45</th>
+        </tr>
+        </thead>
+        <tbody>
+        <!-- Weekdays -->
+        <tr>
+          <td class="table-cell border px-4">Pirmadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Antradienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Trečiadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Ketvirtadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        <tr>
+          <td class="table-cell border px-4 py-2">Penktadienis</td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+              <div class="border-t">Duomenų bazių valdymas, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Programavimas kalba Java, 420A</div>
+
+            </div>
+          </td>
+          <td class="table-cell border px-2">
+            <div class="flex flex-col">
+              <div>Incidentai elektroninėje erdvėje ir jų tyrimo metodikos, 317A</div>
+            </div>
+          </td>
+        </tr>
+        </tbody>
+      </table>
+    </div>
+    <div class="bg-white shadow-lg rounded-lg overflow-hidden">
+      <table class="timetable-table min-w-full border-collapse">
+        <thead class="bg-black">
+        <tr>
+          <th class="border text-yellow-400">PI24A</th>
           <th class="table-header border px-4 py-2">8:30-10:00</th>
           <th class="table-header border px-4 py-2">10:15-11:45</th>
           <th class="table-header border px-4 py-2">12:30-14:00</th>
@@ -3858,15 +4806,31 @@ const timetables = ref([
 </template>
 
 <style scoped>
+
+
 /* Custom styles to fit 4K display */
 .timetable-table {
   width: 100%; /* Take full width */
+  border-collapse: collapse; /* Remove gaps between cells */
+  //background-color: black; /* Black background for high contrast */
 }
+
 .table-header {
-  font-size: 0.65rem; /* Larger font for header */
+  font-size: 0.65rem; /* Larger font for better readability */
+  font-weight: lighter; /* Bold header text */
+  //background-color: #333; /* Dark gray background for header */
+  color: black; /* White text for contrast */
+  border: 1px solid white; /* White borders for better visibility */
 }
+
 .table-cell {
-  font-size: 0.65rem; /* Larger font for cells */
-  height: 77px; /* Increased height for better visibility */
+  font-size: 0.65rem; /* Increase font size for better visibility */
+  font-weight: lighter;
+  height: 77px; /* Increased height for visibility */
+  //text-align: center; /* Center align text */
+  //background-color: black; /* Black background */
+  color: black; /* White text for contrast */
+  border: 0.01rem solid gray; /* White borders between cells */
+  //padding: 10px; /* Add some padding for readability */
 }
 </style>
