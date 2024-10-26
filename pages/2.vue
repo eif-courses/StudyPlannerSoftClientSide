@@ -24,6 +24,58 @@ interface Group {
   short: string; // Short name
 }
 
+import {ref as dbRef, query, orderByChild, onValue} from 'firebase/database';
+
+const todos = ref([]); // All todos
+const filteredTodos = ref([]); // Filtered todos
+
+// Access Firebase database via $firebaseDb
+const {$firebaseDb} = useNuxtApp();
+
+const fetchTodos = () => {
+  const dbRefPath = dbRef($firebaseDb, 'user-posts');
+  const q = query(dbRefPath, orderByChild('paskaita'));
+
+  // Fetch data from the Firebase Realtime Database
+  onValue(q, (snapshot) => {
+    const temp = [];
+    snapshot.forEach((data) => {
+      const obj = data.val();
+      temp.push({
+        id: data.key,
+        date: obj.date,
+        paskaita: obj.paskaita,
+        destytojas: obj.destytojas,
+        auditorija: obj.auditorija,
+        grupe: obj.grupe.replace('<b>', '').replace('</b>', ''),
+      });
+    });
+
+    todos.value = temp; // Update the todos
+    filterTodosByCurrentWeek(); // Call the filter function
+  });
+};
+
+// Function to filter todos based on the current week
+const filterTodosByCurrentWeek = () => {
+  const startOfWeek = new Date();
+  const endOfWeek = new Date();
+
+  // Set the start of the week to Monday
+  startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1);
+  startOfWeek.setHours(0, 0, 0, 0); // Start of the day
+
+  // Set the end of the week to Sunday
+  endOfWeek.setDate(endOfWeek.getDate() - endOfWeek.getDay() + 7);
+  endOfWeek.setHours(23, 59, 59, 999); // End of the day
+
+  // Filter todos based on the date
+  filteredTodos.value = todos.value.filter(todo => {
+    const todoDate = new Date(todo.date); // Convert to Date object
+    return todoDate >= startOfWeek && todoDate <= endOfWeek; // Check if within the week
+  });
+};
+
 
 const getEntriesInTimeSlot = (entries, timeSlot) => {
   const results = [];
@@ -83,7 +135,6 @@ const timeRanges = computed(() => {
 });
 
 
-
 // Function to fetch classroom data for multiple IDs
 const fetchClassroomData = async (classroomIds: string[]) => {
   try {
@@ -95,7 +146,7 @@ const fetchClassroomData = async (classroomIds: string[]) => {
     const results = await Promise.all(fetchPromises);
 
     // Iterate through the results and merge data into finalClassrooms
-    results.forEach(({ data, error }, index) => {
+    results.forEach(({data, error}, index) => {
       if (error.value) {
         console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, error.value);
       }
@@ -185,13 +236,19 @@ const groupAndSortClassrooms = () => {
 
   console.log('Grouped classrooms by classid:', groupedClassrooms.value);
 };
-
+const removeBoldTags = (text: string): string => {
+  return text.replace(/<\/?b>/g, "");
+};
 // Fetch data when the component is mounted
 onMounted(async () => {
   const classroomIds = await fetchGroupIds(); // Get the group IDs
   if (classroomIds.length > 0) { // Check if the array is not empty
     await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
   }
+});
+
+onMounted(() => {
+  fetchTodos();
 });
 </script>
 
@@ -200,6 +257,7 @@ onMounted(async () => {
     <div v-if="finalClassrooms.length === 0">Loading or no classrooms found.</div>
   </div>
 
+
   <div class="grid grid-cols-4 gap-2">
     <template v-for="(classEntries, classid) in groupedClassrooms" :key="classid">
       <div class="overflow-hidden">
@@ -207,7 +265,9 @@ onMounted(async () => {
           <thead class="bg-black text-white">
           <tr>
             <th class="border">{{ classid }}</th>
-            <th class="table-header border px-4 py-2 font-bold" v-for="(timeSlot, index) in timeRanges" :key="index">{{ timeSlot }}</th>
+            <th class="table-header border py-2 font-bold" v-for="(timeSlot, index) in timeRanges" :key="index">
+              {{ timeSlot }}
+            </th>
           </tr>
           </thead>
 
@@ -216,11 +276,47 @@ onMounted(async () => {
             <td class="table-cell border px-4">{{ getLithuanianWeekday(date) }}<br/>{{ date }}</td>
             <td v-for="(timeSlot, index) in timeSlots" :key="index" class="table-cell border px-2">
               <div>
-                <div v-for="entry in getEntriesInTimeSlot(entries, timeSlot)" :key="entry.subjectid" class="flex flex-col">
+                <div v-for="entry in getEntriesInTimeSlot(entries, timeSlot)" :key="entry.subjectid"
+                     class="flex flex-col">
                   <p>
-                    {{ entry.subjectid }},
-                    <span class="font-bold">{{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}</span>
+
+
+                    <template v-for="todo in filteredTodos" :key="todo.id">
+
+
+                      {{todo}}
+
+                      <template v-if="entry.classroomids.join(', ').includes(todo.auditorija)">
+
+                        <template v-if="classid === removeBoldTags(todo.grupe) && index === todo.paskaita">
+
+                          <span class="line-through">{{ entry.subjectid }},</span>
+                          <span class="font-bold line-through">{{
+                              entry.classroomids.join(', ')
+                            }} {{ entry.groupnames.join(', ') }}</span>
+
+                          <p class="bg-red-500 text-white font-bold p-1" v-if="index === 1">
+                            Paskaitos nėra
+                          </p>
+                        </template>
+
+                        <template v-else>
+                          {{ entry.subjectid }},
+                          <span class="font-bold">{{ entry.classroomids.join(', ') }} {{
+                              entry.groupnames.join(', ')
+                            }}</span>
+                        </template>
+                      </template>
+                      <template v-else>
+                        {{ entry.subjectid }},
+                        <span class="font-bold">{{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}</span>
+                      </template>
+
+
+                    </template>
+
                   </p>
+
                 </div>
               </div>
             </td>
@@ -244,16 +340,30 @@ onMounted(async () => {
 .table-header {
   font-size: 0.65rem;
   font-weight: bold;
-  border: 1px solid white;
+  border: 0.01rem solid white;
 }
 
 .table-cell {
   font-size: 0.65rem;
   font-weight: lighter;
-  height: 77px;
-
-
+  height: 70px;
   color: black;
   border: 0.01rem solid gray;
 }
+
+th {
+  background-color: black;
+  color: white;
+  text-align: center;
+}
+
+td {
+  border: 0.01rem solid #ddd;
+}
+
+tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+
 </style>
