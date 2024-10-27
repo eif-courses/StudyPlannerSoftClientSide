@@ -236,6 +236,25 @@ const groupAndSortClassrooms = () => {
 
   console.log('Grouped classrooms by classid:', groupedClassrooms.value);
 };
+
+function shouldCheckClassroom(currentDate, classid, index) {
+  return todos.value.some((classroom) => {
+    // Parse both dates to ensure consistent comparison
+    const parsedCurrentDate = new Date(currentDate);
+    const parsedClassroomDate = new Date(classroom.date);
+
+    // Log the parsed dates for debugging
+   // console.log('Parsed Classroom Date:', parsedClassroomDate);
+    //console.log('Parsed Current Date:', parsedCurrentDate);
+
+    // Compare the dates
+    const areDatesEqual = parsedCurrentDate.toDateString() === parsedClassroomDate.toDateString();
+
+    return areDatesEqual && classroom.grupe === classid && (classroom.paskaita === (index + 1));
+  });
+}
+
+
 const removeBoldTags = (text: string): string => {
   return text.replace(/<\/?b>/g, "");
 };
@@ -271,6 +290,7 @@ onMounted(() => {
           </tr>
           </thead>
 
+
           <tbody>
           <tr v-for="(entries, date) in classEntries" :key="date">
             <td class="table-cell border px-4">{{ getLithuanianWeekday(date) }}<br/>{{ date }}</td>
@@ -279,44 +299,24 @@ onMounted(() => {
                 <div v-for="entry in getEntriesInTimeSlot(entries, timeSlot)" :key="entry.subjectid"
                      class="flex flex-col">
                   <p>
+                    <!-- Check both local and Firebase data -->
+                    <template v-if="shouldCheckClassroom(date, classid, index)">
 
-
-
-
-
-
-
-                      <template v-if="entry.classroomids.join(', ').includes('408')">
-
-                        <template v-if="classid === 'EI22A' && index === 1">
-
-                          <span class="line-through">{{ entry.subjectid }},</span>
-                          <span class="font-bold line-through">{{
-                              entry.classroomids.join(', ')
-                            }} {{ entry.groupnames.join(', ') }}</span>
-
-                          <p class="bg-red-500 text-white font-bold p-1" v-if="index === 1">
-                            Paskaitos nėra
-                          </p>
-                        </template>
-
-                        <template v-else>
-                          {{ entry.subjectid }},
-                          <span class="font-bold">{{ entry.classroomids.join(', ') }} {{
-                              entry.groupnames.join(', ')
-                            }}</span>
-                        </template>
-                      </template>
-                      <template v-else>
-                        {{ entry.subjectid }},
-                        <span class="font-bold">{{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}</span>
-                      </template>
-
-
-
-
+                      <span class="line-through">{{ entry.subjectid }},</span>
+                      <span class="font-bold line-through">{{
+                          entry.classroomids.join(', ')
+                        }} {{ entry.groupnames.join(', ') }}</span>
+                      <p class="bg-red-500 text-white font-bold p-1" v-if="index === 1">
+                        Paskaitos nėra
+                      </p>
+                    </template>
+                    <template v-else>
+                      {{ entry.subjectid }},
+                      <span class="font-bold">{{ entry.classroomids.join(', ') }} {{
+                          entry.groupnames.join(', ')
+                        }}</span>
+                    </template>
                   </p>
-
                 </div>
               </div>
             </td>
