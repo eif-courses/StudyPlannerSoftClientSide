@@ -281,14 +281,14 @@ onMounted(() => {
                   <p>
 
 
-                    <template v-for="todo in filteredTodos" :key="todo.id">
 
 
-                      {{todo}}
 
-                      <template v-if="entry.classroomids.join(', ').includes(todo.auditorija)">
 
-                        <template v-if="classid === removeBoldTags(todo.grupe) && index === todo.paskaita">
+
+                      <template v-if="entry.classroomids.join(', ').includes('408')">
+
+                        <template v-if="classid === 'EI22A' && index === 1">
 
                           <span class="line-through">{{ entry.subjectid }},</span>
                           <span class="font-bold line-through">{{
@@ -313,7 +313,7 @@ onMounted(() => {
                       </template>
 
 
-                    </template>
+
 
                   </p>
 
