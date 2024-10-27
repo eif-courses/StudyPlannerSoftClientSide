@@ -32,7 +32,7 @@ const filteredTodos = ref([]); // Filtered todos
 // Access Firebase database via $firebaseDb
 const {$firebaseDb} = useNuxtApp();
 
-const fetchTodos = () => {
+const fetchTodos = async () => {
   const dbRefPath = dbRef($firebaseDb, 'user-posts');
   const q = query(dbRefPath, orderByChild('paskaita'));
 
@@ -52,9 +52,14 @@ const fetchTodos = () => {
     });
 
     todos.value = temp; // Update the todos
-    filterTodosByCurrentWeek(); // Call the filter function
+    //filterTodosByCurrentWeek(); // Call the filter function
   });
 };
+
+watch(todos, () => {
+  filterTodosByCurrentWeek();
+});
+
 
 // Function to filter todos based on the current week
 const filterTodosByCurrentWeek = () => {
@@ -238,17 +243,23 @@ const groupAndSortClassrooms = () => {
 };
 
 function shouldCheckClassroom(currentDate, classid, index) {
-  return todos.value.some((classroom) => {
-    // Parse both dates to ensure consistent comparison
+  return filteredTodos.value.some((classroom) => {
     const parsedCurrentDate = new Date(currentDate);
     const parsedClassroomDate = new Date(classroom.date);
 
-    // Log the parsed dates for debugging
-   // console.log('Parsed Classroom Date:', parsedClassroomDate);
-    //console.log('Parsed Current Date:', parsedCurrentDate);
 
-    // Compare the dates
-    const areDatesEqual = parsedCurrentDate.toDateString() === parsedClassroomDate.toDateString();
+    //console.log(parsedClassroomDate,"----", parsedCurrentDate)
+
+
+    // Compare only year, month, and day
+    const areDatesEqual =
+        parsedCurrentDate.getFullYear() === parsedClassroomDate.getFullYear() &&
+        parsedCurrentDate.getMonth() === parsedClassroomDate.getMonth() &&
+        parsedCurrentDate.getDate() === parsedClassroomDate.getDate();
+
+    if (areDatesEqual) {
+      console.log(areDatesEqual, currentDate, classid, index);
+    }
 
     return areDatesEqual && classroom.grupe === classid && (classroom.paskaita === (index + 1));
   });
@@ -263,12 +274,13 @@ onMounted(async () => {
   const classroomIds = await fetchGroupIds(); // Get the group IDs
   if (classroomIds.length > 0) { // Check if the array is not empty
     await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
+    await fetchTodos();
   }
 });
 
-onMounted(() => {
-  fetchTodos();
-});
+// onMounted(() => {
+//   fetchTodos();
+// });
 </script>
 
 <template>
