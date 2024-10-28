@@ -41,9 +41,11 @@ const fetchTodos = () => {
     const temp = [];
     snapshot.forEach((data) => {
       const obj = data.val();
+      const formattedDate = transformDate(obj.date); // Transform the date before adding it
+
       temp.push({
         id: data.key,
-        date: obj.date,
+        date: formattedDate, // Use the formatted date here
         paskaita: obj.paskaita,
         destytojas: obj.destytojas,
         auditorija: obj.auditorija,
@@ -52,9 +54,16 @@ const fetchTodos = () => {
     });
 
     todos.value = temp; // Update the todos
-    //filterTodosByCurrentWeek(); // Call the filter function
+    // filterTodosByCurrentWeek(); // Call the filter function
   });
+
 };
+
+const transformDate = (dateStr: string | number): string => {
+  const parsedDate = new Date(Date.parse(dateStr + " UTC"));
+  return parsedDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD in UTC
+};
+
 
 watch(todos, () => {
   filterTodosByCurrentWeek();
@@ -140,23 +149,22 @@ const timeRanges = computed(() => {
 });
 
 
-// Function to fetch classroom data for multiple IDs
 const fetchClassroomData = async (classroomIds: string[]) => {
   try {
+    // Use $fetch with map to fetch data for each classroomId
     const fetchPromises = classroomIds.map(classroomId =>
-        useFetch<TimetableEntry[]>(`https://onlinecourses-production.up.railway.app/timetable/group?group_id=${classroomId}`)
+        $fetch<TimetableEntry[]>(`https://onlinecourses-production.up.railway.app/timetable/group?group_id=${classroomId}`)
     );
 
     // Await all promises to resolve
-    const results = await Promise.all(fetchPromises);
+    const results = await Promise.allSettled(fetchPromises);
 
     // Iterate through the results and merge data into finalClassrooms
-    results.forEach(({data, error}, index) => {
-      if (error.value) {
-        console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, error.value);
-      }
-      if (data.value) {
-        finalClassrooms.value.push(...data.value); // Merge results
+    results.forEach((result, index) => {
+      if (result.status === 'rejected') {
+        console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, result.reason);
+      } else if (result.value) {
+        finalClassrooms.value.push(...result.value); // Merge results
       }
     });
 
@@ -167,6 +175,7 @@ const fetchClassroomData = async (classroomIds: string[]) => {
     console.error('Failed to fetch classroom data:', e);
   }
 };
+
 
 // Function to fetch group IDs
 const fetchGroupIds = async () => {
@@ -179,7 +188,7 @@ const fetchGroupIds = async () => {
     }
 
     const data = await response.json(); // Parse JSON from the response
-    console.log('API Response:', data); // Log the response for debugging
+    //console.log('API Response:', data); // Log the response for debugging
 
     // Check if data is an array
     if (Array.isArray(data)) {
@@ -239,32 +248,109 @@ const groupAndSortClassrooms = () => {
   // Optionally, sort the time slots
   timeSlots.value.sort();
 
-  console.log('Grouped classrooms by classid:', groupedClassrooms.value);
+  //console.log('Grouped classrooms by classid:', groupedClassrooms.value);
 };
 
-function shouldCheckClassroom(currentDate, classid, index) {
-  return filteredTodos.value.some((classroom) => {
-    const parsedCurrentDate = new Date(currentDate);
-    const parsedClassroomDate = new Date(classroom.date);
 
+function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
+  const parseDateToUTC = (dateStr: string | number): string => {
+    const parsedDate = new Date(Date.parse(dateStr + " UTC"));
+    return parsedDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD in UTC
+  };
 
-    //console.log(parsedClassroomDate,"----", parsedCurrentDate)
+  const formattedCurrentDate = parseDateToUTC(currentDate);
 
+  const results = filteredTodos.value.map((classroom) => {
+    const formattedClassroomDate = parseDateToUTC(classroom.date);
 
-    // Compare only year, month, and day
-    const areDatesEqual =
-        parsedCurrentDate.getFullYear() === parsedClassroomDate.getFullYear() &&
-        parsedCurrentDate.getMonth() === parsedClassroomDate.getMonth() &&
-        parsedCurrentDate.getDate() === parsedClassroomDate.getDate();
+    const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
+    let isGroupEqual = false;
+    let groupId = classid.toString();
 
-    if (areDatesEqual) {
-      console.log(areDatesEqual, currentDate, classid, index);
+    if (!groupId.includes('.')) {
+      isGroupEqual = groupId.trim() === classroom.grupe.trim();
+    } else {
+      isGroupEqual = groupId.trim().split(' ')[0] === classroom.grupe.trim().split(' ')[0];
     }
 
-    return true;
-    //return areDatesEqual && classroom.grupe === classid && (classroom.paskaita === (index-1));
+    const isLectureEqual = classroom.paskaita === String(index + 1);
+
+    return {
+      classroom,
+      isMatch: areDatesEqual && isGroupEqual && isLectureEqual,
+    };
   });
+
+  // Filter results to find the matches
+  const matches = results.filter(result => result.isMatch);
+
+  // Return matched classrooms or null if none found
+  return matches.length > 0 ? matches[0] : null; // Return the first match or null
 }
+
+
+// function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
+//
+//
+//
+//   const parseDateToUTC = (dateStr: string | number): string => {
+//     const parsedDate = new Date(Date.parse(dateStr + " UTC"));
+//     return parsedDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD in UTC
+//   };
+//
+//   const formattedCurrentDate = parseDateToUTC(currentDate);
+//
+//   return filteredTodos.value.some((classroom) => {
+//     const formattedClassroomDate = parseDateToUTC(classroom.date);
+//
+//     // Compare only year, month, and day
+//     const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
+//     //const isGroupEqual = classroom.grupe === classid;
+//
+//     let isGroupEqual;
+//     let groupId = classid.toString();
+//
+//
+//
+//     if (!groupId.includes('.')) {
+//       isGroupEqual = groupId.trim() === classroom.grupe.trim();
+//
+//       //isGroupEqual = groupId.split(' ')[0] === classroom.grupe.split(' ')[0];
+//       console.log('GRUPES ID: ', classid.toString(), classroom.grupe)
+//     }else {
+//       isGroupEqual = groupId.trim().split(' ')[0] === classroom.grupe.trim().split(' ')[0];
+//     }
+//     // Check for equality after processing
+//    // const isGroupEqual = groupId === classid;
+//
+//     if (areDatesEqual && isGroupEqual && classroom.paskaita === (index + 1)) {
+//       console.log(areDatesEqual, currentDate, classid, index); // Debug statement
+//       return true; // Only return true if the conditions are met
+//     }
+//
+//
+//     const isLectureEqual = classroom.paskaita === String(index + 1);
+//
+//     // Debugging output
+//
+//
+//     if(areDatesEqual && isGroupEqual && isLectureEqual) {
+//       console.log({
+//         formattedCurrentDate,
+//         formattedClassroomDate,
+//         areDatesEqual,
+//         isGroupEqual,
+//         isLectureEqual,
+//         classroom,
+//         currentDate,
+//         classid,
+//         lectureIndex: index + 1
+//       });
+//     }
+//     // Return true only if all conditions match
+//     return areDatesEqual && isGroupEqual && isLectureEqual;
+//   });
+// }
 
 
 const removeBoldTags = (text: string): string => {
@@ -275,13 +361,15 @@ onMounted(async () => {
   const classroomIds = await fetchGroupIds(); // Get the group IDs
   if (classroomIds.length > 0) { // Check if the array is not empty
     await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
-    //await fetchTodos();
+    fetchTodos();
+    console.log('filtered todos: ', filteredTodos);
+
   }
 });
 
-onMounted(() => {
-  fetchTodos();
-});
+// onMounted(() => {
+//   fetchTodos();
+// });
 </script>
 
 <template>
@@ -303,31 +391,52 @@ onMounted(() => {
           </tr>
           </thead>
 
-
           <tbody>
           <tr v-for="(entries, date) in classEntries" :key="date">
-            <td class="table-cell border px-4">{{ getLithuanianWeekday(date) }}<br/>{{ date }}</td>
+            <td class="table-cell border px-4">
+              {{ getLithuanianWeekday(date) }}<br/>{{ date }}
+            </td>
             <td v-for="(timeSlot, index) in timeSlots" :key="index" class="table-cell border px-2">
               <div>
-                <div v-for="entry in getEntriesInTimeSlot(entries, timeSlot)" :key="entry.subjectid"
-                     class="flex flex-col">
+                <div
+                    v-for="entry in getEntriesInTimeSlot(entries, timeSlot)"
+                    :key="entry.subjectid + '-' + index"
+                    class="flex flex-col"
+                >
                   <p>
-                    <!-- Check both local and Firebase data -->
-                    <template v-if="shouldCheckClassroom(date, classid, index)">
+                    <template v-if="shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)">
 
-                      <span class="line-through">{{ entry.subjectid }},</span>
-                      <span class="font-bold line-through">{{
-                          entry.classroomids.join(', ')
-                        }} {{ entry.groupnames.join(', ') }}</span>
-                      <p class="bg-red-500 text-white font-bold p-1" v-if="index === 1">
-                        Paskaitos nėra
-                      </p>
+
+                      <template
+                          v-if="shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.isMatch && shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.classroom.auditorija ==='-'">
+
+
+                        <span class="line-through">{{ entry.subjectid }},</span>
+
+                      <span class="font-bold line-through">
+                        {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}
+                      </span>
+                        <p class="bg-red-500 text-white font-light p-1">
+                          {{shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.classroom.destytojas}}
+                        </p>
+                      </template>
+                      <template v-else>
+
+                        <span>{{ entry.subjectid }},</span>
+                      <span class="font-bold">
+                       {{shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.classroom.auditorija}}
+                      </span>
+                        <p class="bg-yellow-400 text-black font-light p-1">
+                          Pasikeitė auditorija
+                        </p>
+                      </template>
+
                     </template>
                     <template v-else>
                       {{ entry.subjectid }},
-                      <span class="font-bold">{{ entry.classroomids.join(', ') }} {{
-                          entry.groupnames.join(', ')
-                        }}</span>
+                      <span class="font-bold">
+                        {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}
+                      </span>
                     </template>
                   </p>
                 </div>
@@ -339,7 +448,6 @@ onMounted(() => {
       </div>
     </template>
   </div>
-
 </template>
 
 <style scoped>
