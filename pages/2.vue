@@ -32,7 +32,7 @@ const filteredTodos = ref([]); // Filtered todos
 // Access Firebase database via $firebaseDb
 const {$firebaseDb} = useNuxtApp();
 
-const fetchTodos = async () => {
+const fetchTodos = () => {
   const dbRefPath = dbRef($firebaseDb, 'user-posts');
   const q = query(dbRefPath, orderByChild('paskaita'));
 
@@ -261,7 +261,8 @@ function shouldCheckClassroom(currentDate, classid, index) {
       console.log(areDatesEqual, currentDate, classid, index);
     }
 
-    return areDatesEqual && classroom.grupe === classid && (classroom.paskaita === (index + 1));
+    return true;
+    //return areDatesEqual && classroom.grupe === classid && (classroom.paskaita === (index-1));
   });
 }
 
@@ -274,13 +275,13 @@ onMounted(async () => {
   const classroomIds = await fetchGroupIds(); // Get the group IDs
   if (classroomIds.length > 0) { // Check if the array is not empty
     await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
-    await fetchTodos();
+    //await fetchTodos();
   }
 });
 
-// onMounted(() => {
-//   fetchTodos();
-// });
+onMounted(() => {
+  fetchTodos();
+});
 </script>
 
 <template>
