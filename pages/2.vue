@@ -1,7 +1,6 @@
 <script setup lang="ts">
 
 import {ref} from 'vue';
-import {useFetch} from 'nuxt/app'; // Ensure useFetch is properly imported
 
 interface TimetableEntry {
   type: string;
