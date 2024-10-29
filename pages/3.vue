@@ -477,8 +477,20 @@ onMounted(async () => {
           <thead class="bg-black text-white">
           <tr>
             <th class="border">{{ classid }}</th>
-            <th class="table-header border py-2 font-bold" v-for="(timeSlot, index) in timeRanges" :key="index">
-              {{ timeSlot }} ({{index + 1}})
+            <th
+                class="table-header border py-2 font-bold text-center"
+                v-for="(timeSlot, index) in timeRanges"
+                :key="index"
+            >
+              <!-- Display Lecture number as a title -->
+              <div class="lecture-title font-medium">
+                {{ index + 1 }} paskaita
+              </div>
+
+              <!-- Time slot below with smaller text -->
+              <div class="time-slot text-gray-400">
+                {{ timeSlot }}
+              </div>
             </th>
           </tr>
           </thead>

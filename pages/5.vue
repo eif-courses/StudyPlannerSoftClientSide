@@ -470,35 +470,28 @@ onMounted(async () => {
   </div>
 
 
-  <div class="grid grid-cols-4 gap-2">
+  <div class="grid grid-cols-4 gap-2 bg-black">
     <template v-for="(classEntries, classid) in groupedClassrooms" :key="classid">
-      <div class="overflow-hidden">
+      <div class="overflow-hidden bg-black">
         <table class="timetable-table min-w-full">
           <thead class="bg-black text-white">
           <tr>
-            <th class="border">{{ classid }}</th>
-
-
-
+            <th class="border border-lime-400 ">{{ classid }}</th>
             <th
-                class="table-header border py-2 text-center"
+                class="table-header py-2 font-bold text-center"
                 v-for="(timeSlot, index) in timeRanges"
                 :key="index"
             >
               <!-- Display Lecture number as a title -->
               <div class="lecture-title font-medium">
-                 {{ index + 1 }} paskaita
+                {{ index + 1 }} paskaita
               </div>
 
               <!-- Time slot below with smaller text -->
-              <div class="time-slot text-white">
+              <div class="time-slot text-lime-600">
                 {{ timeSlot }}
               </div>
             </th>
-
-
-
-
           </tr>
           </thead>
 
@@ -527,7 +520,7 @@ onMounted(async () => {
                         <span class="font-bold line-through">
                         {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}
                       </span>
-                        <p class="bg-red-500 text-white font-light p-1">
+                        <p class="bg-red-500 text-black font-light p-1">
                           {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.destytojas }}
                         </p>
                       </template>
@@ -573,37 +566,30 @@ onMounted(async () => {
 <style scoped>
 
 
-.lecture-title {
-  font-size: 0.8em;
-}
-.time-slot {
-  font-size: 0.75em;
-}
-
-
 .timetable-table {
   width: 100%;
   border-collapse: collapse;
-
 }
 
 .table-header {
   font-size: 0.65rem;
-  font-weight: bold;
-  border: 0.01rem solid white;
+  font-weight: lighter;
+  border: 0.01rem solid limegreen;
 }
 
 .table-cell {
   font-size: 0.65rem;
   font-weight: lighter;
   height: 70px;
-  color: black;
-  border: 0.01rem solid gray;
+  color: limegreen;
+  border: 0.01rem solid limegreen;
+  background: black;
+
 }
 
 th {
   background-color: black;
-  color: white;
+  color: lime;
   text-align: center;
 }
 
