@@ -470,9 +470,9 @@ onMounted(async () => {
   </div>
 
 
-  <div class="grid grid-cols-4 gap-2 bg-black">
+  <div class="grid grid-cols-4 gap-2 bg-yellow-50">
     <template v-for="(classEntries, classid) in groupedClassrooms" :key="classid">
-      <div class="overflow-hidden bg-black">
+      <div class="overflow-hidden">
         <table class="timetable-table min-w-full">
           <thead class="bg-black text-white">
           <tr>
@@ -553,10 +553,10 @@ onMounted(async () => {
 
 <style scoped>
 
-
 .timetable-table {
   width: 100%;
   border-collapse: collapse;
+
 }
 
 .table-header {
@@ -569,14 +569,12 @@ onMounted(async () => {
   font-size: 0.65rem;
   font-weight: lighter;
   height: 70px;
-  color: white;
+  color: black;
   border: 0.01rem solid gray;
-  background: black;
-
 }
 
 th {
-  background-color: black;
+  background-color: #0047e1;
   color: white;
   text-align: center;
 }
@@ -586,7 +584,7 @@ td {
 }
 
 tr:nth-child(even) {
-  background-color: #f2f2f2;
+  background-color:floralwhite;
 }
 
 

@@ -164,16 +164,98 @@ const fetchClassroomData = async (classroomIds: string[]) => {
         console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, result.reason);
       } else if (result.value) {
         finalClassrooms.value.push(...result.value); // Merge results
+
+
+
+        const newTimetableEntry: TimetableEntry = {
+          type: "Lecture",
+          date: "2024-10-29",
+          uniperiod: "7",
+          starttime: "19:30",
+          endtime: "20:45",
+          subjectid: "",
+          classids: ["PI23E"],
+          groupnames: [""],
+          igroupid: "GRP123",
+          teacherids: [""],
+          classroomids: [""],
+          colors: ["#FF5733"]
+        };
+
+        // Ensure nested structure exists at each level
+
+
+        // Append the new timetable entry
+        finalClassrooms.value.push(newTimetableEntry);
+
+
       }
     });
 
+
+    console.log('Final classrooms before grouping:', finalClassrooms.value);
+
+
     // Group and sort the data
     groupAndSortClassrooms();
+    sortGroupedClassrooms();
     console.log('Grouped classrooms:', groupedClassrooms.value);
   } catch (e) {
     console.error('Failed to fetch classroom data:', e);
   }
 };
+
+
+
+
+// ANTRA RUSIAVIMO VERSIJA
+const sortGroupedClassrooms = () => {
+  // Step 1: Transform the object into an array
+  const classroomsArray: Array<{ classid: string; date: string; starttime: string; entries: TimetableEntry[] }> = [];
+
+  for (const classid in groupedClassrooms.value) {
+    for (const date in groupedClassrooms.value[classid]) {
+      for (const starttime in groupedClassrooms.value[classid][date]) {
+        classroomsArray.push({
+          classid,
+          date,
+          starttime,
+          entries: groupedClassrooms.value[classid][date][starttime],
+        });
+      }
+    }
+  }
+
+  // Step 2: Sort the array by date and then by starttime
+  classroomsArray.sort((a, b) => {
+    // Sort by date first
+    const dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
+    if (dateComparison !== 0) return dateComparison;
+
+    // Sort by starttime if dates are equal
+    return a.starttime.localeCompare(b.starttime);
+  });
+
+  // Step 3: (Optional) Transform back to the original structure
+  const sortedGroupedClassrooms: typeof groupedClassrooms.value = {};
+
+  classroomsArray.forEach(({ classid, date, starttime, entries }) => {
+    if (!sortedGroupedClassrooms[classid]) {
+      sortedGroupedClassrooms[classid] = {};
+    }
+    if (!sortedGroupedClassrooms[classid][date]) {
+      sortedGroupedClassrooms[classid][date] = {};
+    }
+    sortedGroupedClassrooms[classid][date][starttime] = entries;
+  });
+
+  // Assign the sorted result back to groupedClassrooms
+  groupedClassrooms.value = sortedGroupedClassrooms;
+
+  // Log the sorted structure for debugging
+  console.log('Sorted grouped classrooms:', groupedClassrooms.value);
+};
+
 
 
 // Function to fetch group IDs
@@ -244,50 +326,60 @@ const groupAndSortClassrooms = () => {
     });
   });
 
-  // Optionally, sort the time slots
   timeSlots.value.sort();
 
   //console.log('Grouped classrooms by classid:', groupedClassrooms.value);
 };
 
 
+
+
+
+
 function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
   const parseDateToUTC = (dateStr: string | number): string => {
     const parsedDate = new Date(Date.parse(dateStr + " UTC"));
-    return parsedDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD in UTC
+    return parsedDate.toISOString().split('T')[0];
   };
 
   const formattedCurrentDate = parseDateToUTC(currentDate);
 
   const results = filteredTodos.value.map((classroom) => {
     const formattedClassroomDate = parseDateToUTC(classroom.date);
-
     const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
     let isGroupEqual = false;
-    let groupId = classid.toString();
+    const groupId = classid.toString();
 
     if (!groupId.includes('.')) {
       isGroupEqual = groupId.trim() === classroom.grupe.trim();
     } else {
-      console.log(classid, classroom.grupe);
       isGroupEqual = groupId.trim() === classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
     }
 
     const isLectureEqual = classroom.paskaita === String(index + 1);
 
+
+
+
+
     return {
       classroom,
       isMatch: areDatesEqual && isGroupEqual && isLectureEqual,
+      isNewLecture: areDatesEqual && isGroupEqual,
+      isGroupEnglish: doesFirstWordEndWithE(classroom.grupe.trim()),
     };
   });
 
-  // Filter results to find the matches
   const matches = results.filter(result => result.isMatch);
-
-  // Return matched classrooms or null if none found
-  return matches.length > 0 ? matches[0] : null; // Return the first match or null
+  return matches.length > 0 ? matches[0] : null;
 }
+function doesFirstWordEndWithE(grupe: string): boolean {
+  // Split the string into words based on spaces
+  const words = grupe.trim().split(" ");
 
+  // Check if there's at least one word and if the first word ends with 'E'
+  return words.length > 0 && words[0].endsWith("E");
+}
 
 // function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
 //
@@ -386,7 +478,7 @@ onMounted(async () => {
           <tr>
             <th class="border">{{ classid }}</th>
             <th class="table-header border py-2 font-bold" v-for="(timeSlot, index) in timeRanges" :key="index">
-              {{ timeSlot }}
+              {{ timeSlot }} ({{index + 1}})
             </th>
           </tr>
           </thead>
@@ -423,16 +515,19 @@ onMounted(async () => {
                       <template v-else>
 
                         <div class="bg-yellow-400 text-black font-light p-1">
-                        <span>{{ entry.subjectid }},</span>
-                        <span class="font-bold">
+                          <span>{{ entry.subjectid }},</span>
+                          <span class="font-bold">
 
                       {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.auditorija }} {{
-                            entry.groupnames.join(', ')
-                          }}
+                              entry.groupnames.join(', ')
+                            }}, {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.destytojas }}
                       </span>
-                        <p>
-                          Pasikeitė auditorija
-                        </p>
+                          <p v-if="!shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.isGroupEnglish">
+                            Pasikeitė auditorija
+                          </p>
+                          <p v-else>
+                            The classroom has changed
+                          </p>
                         </div>
 
                       </template>
