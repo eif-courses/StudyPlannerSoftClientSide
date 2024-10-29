@@ -269,7 +269,8 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
     if (!groupId.includes('.')) {
       isGroupEqual = groupId.trim() === classroom.grupe.trim();
     } else {
-      isGroupEqual = groupId.trim().split(' ')[0] === classroom.grupe.trim().split(' ')[0];
+      console.log(classid, classroom.grupe);
+      isGroupEqual = groupId.trim() === classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
     }
 
     const isLectureEqual = classroom.paskaita === String(index + 1);
@@ -412,22 +413,28 @@ onMounted(async () => {
 
                         <span class="line-through">{{ entry.subjectid }},</span>
 
-                      <span class="font-bold line-through">
+                        <span class="font-bold line-through">
                         {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}
                       </span>
                         <p class="bg-red-500 text-white font-light p-1">
-                          {{shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.classroom.destytojas}}
+                          {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.destytojas }}
                         </p>
                       </template>
                       <template v-else>
 
+                        <div class="bg-yellow-400 text-black font-light p-1">
                         <span>{{ entry.subjectid }},</span>
-                      <span class="font-bold">
-                       {{shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.classroom.auditorija}}
+                        <span class="font-bold">
+
+                      {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.auditorija }} {{
+                            entry.groupnames.join(', ')
+                          }}
                       </span>
-                        <p class="bg-yellow-400 text-black font-light p-1">
+                        <p>
                           Pasikeitė auditorija
                         </p>
+                        </div>
+
                       </template>
 
                     </template>
