@@ -594,7 +594,7 @@ th {
 }
 
 td {
-  border: 0.01rem solid #ddd;
+  border: 0.01rem solid limegreen;
 }
 
 tr:nth-child(even) {
