@@ -1,29 +1,39 @@
 <script setup lang="ts">
 
-import {ref} from 'vue';
-
+// Define the structure for an entry in the timetable
 interface TimetableEntry {
-  type: string;
-  date: string;
-  uniperiod: string;
-  starttime: string;
-  endtime: string;
-  subjectid: string;
-  classids: string[];
-  groupnames: string[];
-  igroupid: string;
-  teacherids: string[];
-  classroomids: string[];
-  colors: string[];
+  date: string;           // The date of the entry
+  uniperiod: string;     // The uniperiod
+  subjectid: string;     // The subject ID
+  groupnames: string;    // Group names
+  teacherids: string;    // Teacher IDs
+  classroomids: string;  // Classroom IDs
+  dayname: string;       // The name of the day
 }
 
+// Define the structure for a timetable on a specific weekday
+interface WeekdayTimetable {
+  weekday: string;      // The date for the weekday timetable
+  entries: TimetableEntry[];  // Array of timetable entries
+}
+
+// Define the structure for a group
 interface Group {
-  id: string; // Group ID
-  name: string; // Group name
-  short: string; // Short name
+  id: string;           // The group ID
+  name: string;         // The group name
+  short: string;        // The short name of the group
+}
+
+// Define the structure for the overall response
+interface TimetableResponse {
+  group: Group;                        // The group information
+  timetable: WeekdayTimetable[];      // Array of timetables for different weekdays
 }
 
 import {ref as dbRef, query, orderByChild, onValue} from 'firebase/database';
+
+import moment from "moment";
+import 'moment/dist/locale/lt';
 
 const todos = ref([]); // All todos
 const filteredTodos = ref([]); // Filtered todos
@@ -31,31 +41,32 @@ const filteredTodos = ref([]); // Filtered todos
 // Access Firebase database via $firebaseDb
 const {$firebaseDb} = useNuxtApp();
 
-const fetchTodos = () => {
+const fetchTodos = async () => {
   const dbRefPath = dbRef($firebaseDb, 'user-posts');
   const q = query(dbRefPath, orderByChild('paskaita'));
 
-  // Fetch data from the Firebase Realtime Database
-  onValue(q, (snapshot) => {
-    const temp = [];
-    snapshot.forEach((data) => {
-      const obj = data.val();
-      const formattedDate = transformDate(obj.date); // Transform the date before adding it
+  return new Promise((resolve) => {
+    // Fetch data from the Firebase Realtime Database
+    onValue(q, (snapshot) => {
+      const temp = [];
+      snapshot.forEach((data) => {
+        const obj = data.val();
+        const formattedDate = transformDate(obj.date); // Transform the date before adding it
 
-      temp.push({
-        id: data.key,
-        date: formattedDate, // Use the formatted date here
-        paskaita: obj.paskaita,
-        destytojas: obj.destytojas,
-        auditorija: obj.auditorija,
-        grupe: obj.grupe.replace('<b>', '').replace('</b>', ''),
+        temp.push({
+          id: data.key,
+          date: formattedDate, // Use the formatted date here
+          paskaita: obj.paskaita,
+          destytojas: obj.destytojas,
+          auditorija: obj.auditorija,
+          grupe: obj.grupe.replace('<b>', '').replace('</b>', ''),
+        });
       });
+
+      todos.value = temp; // Update the todos
+      resolve(); // Resolve the promise once data is fetched
     });
-
-    todos.value = temp; // Update the todos
-    // filterTodosByCurrentWeek(); // Call the filter function
   });
-
 };
 
 const transformDate = (dateStr: string | number): string => {
@@ -89,7 +100,6 @@ const filterTodosByCurrentWeek = () => {
   });
 };
 
-
 const getEntriesInTimeSlot = (entries, timeSlot) => {
   const results = [];
   for (const key in entries) {
@@ -105,235 +115,36 @@ const getEntriesInTimeSlot = (entries, timeSlot) => {
   return results;
 };
 
-const weekdays = [
-  'Pirmadienis', // Monday
-  'Antradienis', // Tuesday
-  'Trečiadienis', // Wednesday
-  'Ketvirtadienis', // Thursday
-  'Penktadienis', // Friday
-  'Šeštadienis', // Saturday
-  'Sekmadienis' // Sunday
-];
-
-// Function to get the weekday name
-const getLithuanianWeekday = (dateString) => {
-  const date = new Date(dateString);
-  const dayIndex = date.getDay(); // getDay returns 0 for Sunday, 1 for Monday, etc.
-  return weekdays[(dayIndex + 6) % 7]; // Adjusting to match Lithuanian week (Monday as first day)
-};
+// const getLithuanianWeekday = (dateString) => {
+//
+//   const weekday = moment(dateString).format('dddd');
+//   return weekday.charAt(0).toUpperCase() + weekday.slice(1); // Capitalize the first letter
+// };
 
 
 // Ref for storing final classrooms data
-const finalClassrooms = ref<TimetableEntry[]>([]);
-const groupedClassrooms = ref<{ [classid: string]: { [date: string]: { [starttime: string]: TimetableEntry[] } } }>({});
-const timeSlots = ref<string[]>([]); // To hold unique time slots
+//const finalClassrooms = ref<TimetableEntry[]>([]);
+// const groupedClassrooms = ref<{ [classid: string]: { [date: string]: { [starttime: string]: TimetableEntry[] } } }>({});
+// const timeSlots = ref<string[]>([]); // To hold unique time slots
 
 
 // Function to add minutes to a time string
-function addMinutes(timeString: string, minutes: number): string {
-  const [hours, minutesPart] = timeString.split(':').map(Number);
-  const totalMinutes = hours * 60 + minutesPart + minutes;
-  const newHours = Math.floor(totalMinutes / 60) % 24; // Wrap around to 24-hour format
-  const newMinutes = totalMinutes % 60;
-  return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
-}
+// function addMinutes(timeString: string, minutes: number): string {
+//   const [hours, minutesPart] = timeString.split(':').map(Number);
+//   const totalMinutes = hours * 60 + minutesPart + minutes;
+//   const newHours = Math.floor(totalMinutes / 60) % 24; // Wrap around to 24-hour format
+//   const newMinutes = totalMinutes % 60;
+//   return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
+// }
 
 // Computed property to generate time ranges
-const timeRanges = computed(() => {
-  return timeSlots.value.map((timeSlot: string) => { // Specify the type of timeSlot
-    const startTime = timeSlot; // Starting time
-    const endTime = addMinutes(startTime, 90); // Adding 1 hour and 30 minutes
-    return `${startTime} - ${endTime}`;
-  });
-});
-
-
-const fetchClassroomData = async (classroomIds: string[]) => {
-  try {
-    // Use $fetch with map to fetch data for each classroomId
-    const fetchPromises = classroomIds.map(classroomId =>
-        $fetch<TimetableEntry[]>(`https://onlinecourses-production.up.railway.app/timetable/group?group_id=${classroomId}`)
-    );
-
-    // Await all promises to resolve
-    const results = await Promise.allSettled(fetchPromises);
-
-    // Iterate through the results and merge data into finalClassrooms
-    results.forEach((result, index) => {
-      if (result.status === 'rejected') {
-        console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, result.reason);
-      } else if (result.value) {
-        finalClassrooms.value.push(...result.value); // Merge results
-
-
-
-        const newTimetableEntry: TimetableEntry = {
-          type: "Lecture",
-          date: "2024-10-29",
-          uniperiod: "7",
-          starttime: "19:30",
-          endtime: "20:45",
-          subjectid: "",
-          classids: ["PI23E"],
-          groupnames: [""],
-          igroupid: "GRP123",
-          teacherids: [""],
-          classroomids: [""],
-          colors: ["#FF5733"]
-        };
-
-        // Ensure nested structure exists at each level
-
-
-        // Append the new timetable entry
-        finalClassrooms.value.push(newTimetableEntry);
-
-
-      }
-    });
-
-
-    console.log('Final classrooms before grouping:', finalClassrooms.value);
-
-
-    // Group and sort the data
-    groupAndSortClassrooms();
-    sortGroupedClassrooms();
-    console.log('Grouped classrooms:', groupedClassrooms.value);
-  } catch (e) {
-    console.error('Failed to fetch classroom data:', e);
-  }
-};
-
-
-
-
-// ANTRA RUSIAVIMO VERSIJA
-const sortGroupedClassrooms = () => {
-  // Step 1: Transform the object into an array
-  const classroomsArray: Array<{ classid: string; date: string; starttime: string; entries: TimetableEntry[] }> = [];
-
-  for (const classid in groupedClassrooms.value) {
-    for (const date in groupedClassrooms.value[classid]) {
-      for (const starttime in groupedClassrooms.value[classid][date]) {
-        classroomsArray.push({
-          classid,
-          date,
-          starttime,
-          entries: groupedClassrooms.value[classid][date][starttime],
-        });
-      }
-    }
-  }
-
-  // Step 2: Sort the array by date and then by starttime
-  classroomsArray.sort((a, b) => {
-    // Sort by date first
-    const dateComparison = new Date(a.date).getTime() - new Date(b.date).getTime();
-    if (dateComparison !== 0) return dateComparison;
-
-    // Sort by starttime if dates are equal
-    return a.starttime.localeCompare(b.starttime);
-  });
-
-  // Step 3: (Optional) Transform back to the original structure
-  const sortedGroupedClassrooms: typeof groupedClassrooms.value = {};
-
-  classroomsArray.forEach(({ classid, date, starttime, entries }) => {
-    if (!sortedGroupedClassrooms[classid]) {
-      sortedGroupedClassrooms[classid] = {};
-    }
-    if (!sortedGroupedClassrooms[classid][date]) {
-      sortedGroupedClassrooms[classid][date] = {};
-    }
-    sortedGroupedClassrooms[classid][date][starttime] = entries;
-  });
-
-  // Assign the sorted result back to groupedClassrooms
-  groupedClassrooms.value = sortedGroupedClassrooms;
-
-  // Log the sorted structure for debugging
-  console.log('Sorted grouped classrooms:', groupedClassrooms.value);
-};
-
-
-
-// Function to fetch group IDs
-const fetchGroupIds = async () => {
-  try {
-    const response = await fetch('https://onlinecourses-production.up.railway.app/timetable/groups/ids');
-
-    // Check if the response is OK (status in the range 200-299)
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-
-    const data = await response.json(); // Parse JSON from the response
-    //console.log('API Response:', data); // Log the response for debugging
-
-    // Check if data is an array
-    if (Array.isArray(data)) {
-      // Map over the data to extract group IDs
-      return data.map(group => group.id);
-    } else {
-      console.error('Unexpected data structure:', data);
-      return [];
-    }
-  } catch (error) {
-    console.error('Failed to fetch group IDs:', error);
-    return [];
-  }
-};
-
-
-const groupAndSortClassrooms = () => {
-  // Reset groupedClassrooms
-  groupedClassrooms.value = {};
-
-  // Group by classid, date, starttime, and endtime
-  finalClassrooms.value.forEach((entry) => {
-    entry.classids.forEach(classid => {
-      const entryDate = entry.date; // Use the date as the key
-      const entryStartTime = entry.starttime; // Use the start time as the key
-      const entryEndTime = entry.endtime; // Use the end time as the key
-
-      // Initialize group entry if it doesn't exist
-      if (!groupedClassrooms.value[classid]) {
-        groupedClassrooms.value[classid] = {};
-      }
-      if (!groupedClassrooms.value[classid][entryDate]) {
-        groupedClassrooms.value[classid][entryDate] = {};
-      }
-
-      // Create a unique key for both start and end times
-      const timeKey = `${entryStartTime}-${entryEndTime}`;
-
-      if (!groupedClassrooms.value[classid][entryDate][timeKey]) {
-        groupedClassrooms.value[classid][entryDate][timeKey] = [];
-      }
-
-      // Check if the entry is already added to avoid duplicates
-      const existingEntries = groupedClassrooms.value[classid][entryDate][timeKey];
-      if (!existingEntries.some(existingEntry => existingEntry.subjectid === entry.subjectid)) {
-        // Push the entry into the appropriate group
-        existingEntries.push(entry);
-      }
-
-      // Add the start time to timeSlots if it doesn't exist
-      if (!timeSlots.value.includes(entryStartTime)) {
-        timeSlots.value.push(entryStartTime);
-      }
-    });
-  });
-
-  timeSlots.value.sort();
-
-  //console.log('Grouped classrooms by classid:', groupedClassrooms.value);
-};
-
-
-
-
+// const timeRanges = computed(() => {
+//   return timeSlots.value.map((timeSlot: string) => { // Specify the type of timeSlot
+//     const startTime = timeSlot; // Starting time
+//     const endTime = addMinutes(startTime, 90); // Adding 1 hour and 30 minutes
+//     return `${startTime} - ${endTime}`;
+//   });
+// });
 
 
 function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
@@ -350,6 +161,9 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
     let isGroupEqual = false;
     const groupId = classid.toString();
 
+    //console.log(classroom.destytojas);
+
+
     if (!groupId.includes('.')) {
       isGroupEqual = groupId.trim() === classroom.grupe.trim();
     } else {
@@ -359,8 +173,27 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
     const isLectureEqual = classroom.paskaita === String(index + 1);
 
 
+    // const parsedEntries: TimetableEntry[] = [
+    //   {
+    //     date: formattedClassroomDate,
+    //     uniperiod: classroom.paskaita,
+    //     subjectid: '',
+    //     groupnames: 'Group A',
+    //     teacherids: classroom.destytojas,
+    //     classroomids: classroom.auditorija,
+    //     dayname: 'Monday'
+    //   },
+    //   // Add more entries as needed
+    // ];
+    //
+    // appendEntries(parsedEntries, formattedClassroomDate);
 
 
+
+    // const isLecturerExists = classroom.destytojas.includes('Paskaitos nėra');
+    // if(!isLecturerExists) {
+    // //  console.log(classroom);
+    // }
 
     return {
       classroom,
@@ -373,6 +206,8 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
   const matches = results.filter(result => result.isMatch);
   return matches.length > 0 ? matches[0] : null;
 }
+
+
 function doesFirstWordEndWithE(grupe: string): boolean {
   // Split the string into words based on spaces
   const words = grupe.trim().split(" ");
@@ -381,83 +216,111 @@ function doesFirstWordEndWithE(grupe: string): boolean {
   return words.length > 0 && words[0].endsWith("E");
 }
 
-// function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
-//
-//
-//
-//   const parseDateToUTC = (dateStr: string | number): string => {
-//     const parsedDate = new Date(Date.parse(dateStr + " UTC"));
-//     return parsedDate.toISOString().split('T')[0]; // Format as YYYY-MM-DD in UTC
-//   };
-//
-//   const formattedCurrentDate = parseDateToUTC(currentDate);
-//
-//   return filteredTodos.value.some((classroom) => {
-//     const formattedClassroomDate = parseDateToUTC(classroom.date);
-//
-//     // Compare only year, month, and day
-//     const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
-//     //const isGroupEqual = classroom.grupe === classid;
-//
-//     let isGroupEqual;
-//     let groupId = classid.toString();
-//
-//
-//
-//     if (!groupId.includes('.')) {
-//       isGroupEqual = groupId.trim() === classroom.grupe.trim();
-//
-//       //isGroupEqual = groupId.split(' ')[0] === classroom.grupe.split(' ')[0];
-//       console.log('GRUPES ID: ', classid.toString(), classroom.grupe)
-//     }else {
-//       isGroupEqual = groupId.trim().split(' ')[0] === classroom.grupe.trim().split(' ')[0];
-//     }
-//     // Check for equality after processing
-//    // const isGroupEqual = groupId === classid;
-//
-//     if (areDatesEqual && isGroupEqual && classroom.paskaita === (index + 1)) {
-//       console.log(areDatesEqual, currentDate, classid, index); // Debug statement
-//       return true; // Only return true if the conditions are met
-//     }
-//
-//
-//     const isLectureEqual = classroom.paskaita === String(index + 1);
-//
-//     // Debugging output
-//
-//
-//     if(areDatesEqual && isGroupEqual && isLectureEqual) {
-//       console.log({
-//         formattedCurrentDate,
-//         formattedClassroomDate,
-//         areDatesEqual,
-//         isGroupEqual,
-//         isLectureEqual,
-//         classroom,
-//         currentDate,
-//         classid,
-//         lectureIndex: index + 1
-//       });
-//     }
-//     // Return true only if all conditions match
-//     return areDatesEqual && isGroupEqual && isLectureEqual;
-//   });
-// }
+
+const timeRanges = ref([
+  '08:30 - 10:00',
+  '09:45 - 11:15',
+  '11:30 - 13:00',
+  '13:15 - 14:45',
+  '15:00 - 16:30',
+  '16:45 - 18:15',
+  '18:30 - 20:00'
+]);
 
 
-const removeBoldTags = (text: string): string => {
-  return text.replace(/<\/?b>/g, "");
-};
-// Fetch data when the component is mounted
-onMounted(async () => {
-  const classroomIds = await fetchGroupIds(); // Get the group IDs
-  if (classroomIds.length > 0) { // Check if the array is not empty
-    await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
-    fetchTodos();
-    console.log('filtered todos: ', filteredTodos);
 
+// Function to check if an entry already exists in the timetable
+function entryExists(timetable: TimetableResponse, newEntry: TimetableEntry, weekday: string): boolean {
+  const dayTimetable = timetable.timetable.find(day => day.weekday === weekday);
+  return dayTimetable?.entries.some(entry =>
+      entry.date === newEntry.date &&
+      entry.uniperiod === newEntry.uniperiod &&
+      entry.classroomids === newEntry.classroomids &&
+      entry.teacherids === newEntry.teacherids
+  ) ?? false;
+}
+
+// Function to append entries from parsed list if they don’t already exist
+function appendEntries(newEntries: TimetableEntry[], weekday: string) {
+  //if (!timetable.value) return;
+
+  console.log("VISKAS OK")
+
+  // Create a new weekday if it doesn't exist
+
+  // TODO NEED TO FIX
+    newEntries.forEach(newEntry => {
+
+        timetable.value?.timetable.entries.push(newEntry);
+
+  });
+}
+
+
+
+
+
+
+
+const timetable = ref<TimetableResponse | null>(null);
+
+const fetchTimetable = async () => {
+  try {
+    const response = await fetch('https://onlinecourses-production.up.railway.app/timetable/groups');
+    if (!response.ok) {
+      throw new Error('Network response was not ok');
+    }
+    const data: TimetableResponse = await response.json();
+    timetable.value = data;
+
+    // Iterate over filteredTodos to append non-duplicate entries
+    filteredTodos.value.forEach((classroom) => {
+      const formattedDate = transformDate(classroom.date);
+      const parsedEntries: TimetableEntry[] = [
+        {
+          date: formattedDate,
+          uniperiod: classroom.paskaita,
+          subjectid: '',
+          groupnames: 'Group A',
+          teacherids: classroom.destytojas,
+          classroomids: classroom.auditorija,
+          dayname: 'Monday' // adjust dayname as needed
+        }
+      ];
+
+      // Append entries if they don't already exist
+      appendEntries(parsedEntries, formattedDate);
+    });
+
+  } catch (error) {
+    console.error('Failed to fetch timetable:', error);
   }
+};
+
+
+onMounted(async () => {
+  await fetchTimetable();
+  moment.locale('lt');
+  await fetchTodos(); // Wait for todos to be fetched
+  //console.log('Filtered todos:', filteredTodos.value); // Log filteredTodos
+
+
 });
+
+
+// Fetch data when the component is mounted
+// onMounted(async () => {
+//   moment.locale('lt');
+//
+//   const classroomIds = await fetchGroupIds(); // Get the group IDs
+//   if (classroomIds.length > 0) { // Check if the array is not empty
+//     await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
+//     await fetchTodos(); // Wait for todos to be fetched
+//     console.log('Filtered todos:', filteredTodos.value); // Log filteredTodos
+//
+//
+//   }
+// });
 
 // onMounted(() => {
 //   fetchTodos();
@@ -465,110 +328,204 @@ onMounted(async () => {
 </script>
 
 <template>
-  <div>
-    <div v-if="finalClassrooms.length === 0">Loading or no classrooms found.</div>
-  </div>
+  <!--  <div>-->
+  <!--    <div v-if="finalClassrooms.length === 0">Loading or no classrooms found.</div>-->
+  <!--  </div>-->
 
 
-  <div class="grid grid-cols-4 gap-2 bg-black">
-    <template v-for="(classEntries, classid) in groupedClassrooms" :key="classid">
-      <div class="overflow-hidden bg-black">
+  <!--  <div>-->
+  <!--    <template v-if="timetable">-->
+  <!--      <div v-for="item in timetable" :key="item.group.id">-->
+  <!--        <h2>{{ item.group.name }}</h2>-->
+  <!--        <div v-for="day in item.timetable" :key="day.weekday">-->
+  <!--          <h3>{{ day.weekday }}</h3>-->
+  <!--          <ul>-->
+  <!--            <li v-for="entry in day.entries" :key="entry.uniperiod">-->
+  <!--              {{ entry.subjectid }} - {{ entry.teacherids }}-->
+  <!--            </li>-->
+  <!--          </ul>-->
+  <!--        </div>-->
+  <!--      </div>-->
+  <!--    </template>-->
+  <!--    <template v-else>-->
+  <!--      <p>Loading timetable...</p> &lt;!&ndash; Loading state &ndash;&gt;-->
+  <!--    </template>-->
+  <!--  </div>-->
+
+
+  <!--  {{timetable}}-->
+
+
+  <div class="grid grid-cols-4 gap-2">
+    <template v-for="group in timetable" :key="group.group.id">
+      <div class="overflow-hidden">
         <table class="timetable-table min-w-full">
           <thead class="bg-black text-white">
           <tr>
-            <th class="border">{{ classid }}</th>
+            <th class="border">{{ group.group.name }} </th>
             <th
                 class="table-header border py-2 font-bold text-center"
-                v-for="(timeSlot, index) in timeRanges"
+                v-for="(slot, index) in timeRanges"
                 :key="index"
             >
-              <!-- Display Lecture number as a title -->
-              <div class="lecture-title font-medium">
-                {{ index + 1 }} paskaita
-              </div>
-
-              <!-- Time slot below with smaller text -->
-              <div class="time-slot text-gray-400">
-                {{ timeSlot }}
-              </div>
+              <div class="lecture-title font-medium">{{ index + 1 }} paskaita</div>
+              <div class="time-slot text-gray-400">{{ slot }}</div>
             </th>
           </tr>
           </thead>
-
           <tbody>
-          <tr v-for="(entries, date) in classEntries" :key="date">
-            <td class="table-cell border px-4">
-              {{ getLithuanianWeekday(date) }}<br/>{{ date }}
-            </td>
-            <td v-for="(timeSlot, index) in timeSlots" :key="index" class="table-cell border px-2">
-              <div>
+          <template v-for="weekday in group.timetable" :key="weekday.weekday">
+            <tr>
+              <td class="table-cell border px-4 font-bold">
+                {{ weekday.entries?.[0]?.dayname || 'N/A' }}<br/>{{ weekday.entries?.[0]?.date || 'N/A' }}
+              </td>
+              <td v-for="(timeSlot, index) in timeRanges" :key="index" class="table-cell border px-2">
                 <div
-                    v-for="entry in getEntriesInTimeSlot(entries, timeSlot)"
-                    :key="entry.subjectid + '-' + index"
-                    class="flex flex-col"
+                    v-for="entry in (weekday.entries || [])"
+                    :key="entry?.subjectid || index"
                 >
-                  <p>
-                    <template v-if="shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)">
 
-
+                  <template v-if="entry?.uniperiod === String(index + 1)">
+                    <template v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isMatch">
                       <template
-                          v-if="shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.isMatch && shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.classroom.auditorija ==='-'">
-
-
+                          v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija === '-'">
                         <span class="line-through">{{ entry.subjectid }},</span>
-
                         <span class="font-bold line-through">
-                        {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}
-                      </span>
-                        <p class="bg-red-500 text-white font-light p-1">
-                          {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.destytojas }}
+                                            {{ entry.classroomids }} {{ entry.groupnames }}
+                                          </span>
+                        <p class="bg-red-500 text-black font-light p-1">
+                          {{ shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.destytojas }}
                         </p>
                       </template>
                       <template v-else>
-
                         <div class="bg-yellow-400 text-black font-light p-1">
                           <span>{{ entry.subjectid }},</span>
                           <span class="font-bold">
-
-                      {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.auditorija }} {{
-                              entry.groupnames.join(', ')
-                            }}, {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.destytojas }}
-                      </span>
-                          <p v-if="!shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.isGroupEnglish">
+                                              {{
+                              shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija
+                            }}
+                                              {{ entry.groupnames }},
+                                              {{
+                              shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.destytojas
+                            }}
+                                            </span>
+                          <p v-if="!shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isGroupEnglish">
                             Pasikeitė auditorija
                           </p>
                           <p v-else>
                             The classroom has changed
                           </p>
                         </div>
-
                       </template>
-
                     </template>
+
                     <template v-else>
                       {{ entry.subjectid }},
                       <span class="font-bold">
-                        {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}
-                      </span>
+                                          {{ entry.classroomids }} {{ entry.groupnames }}
+                                        </span>
                     </template>
-                  </p>
+                  </template>
+
+
+
                 </div>
-              </div>
-            </td>
-          </tr>
+              </td>
+            </tr>
+          </template>
           </tbody>
         </table>
       </div>
     </template>
   </div>
+
+
+  <!--  <div class="grid grid-cols-4 gap-2">-->
+  <!--    <template v-for="weekdayTimetable in timetable?.timetable" :key="weekdayTimetable.weekday">-->
+  <!--      <div class="overflow-hidden">-->
+  <!--        <table class="timetable-table min-w-full">-->
+  <!--          <thead class="bg-black text-white">-->
+  <!--          <tr>-->
+  <!--            <th class="border">{{ timetable?.group.name }}</th>-->
+  <!--            <th-->
+  <!--                class="table-header border py-2 font-bold text-center"-->
+  <!--                v-for="(timeSlot, index) in timeRanges"-->
+  <!--                :key="index"-->
+  <!--            >-->
+  <!--              <div class="lecture-title font-medium">-->
+  <!--                {{ index + 1 }} paskaita-->
+  <!--              </div>-->
+  <!--              <div class="time-slot text-gray-400">-->
+  <!--                {{ timeSlot }}-->
+  <!--              </div>-->
+  <!--            </th>-->
+  <!--          </tr>-->
+  <!--          </thead>-->
+
+  <!--          <tbody>-->
+  <!--          <tr v-for="entry in weekdayTimetable.entries" :key="entry.date">-->
+  <!--            <td class="table-cell border px-4">-->
+  <!--              {{ entry.dayname }}<br />{{ entry.date }}-->
+  <!--            </td>-->
+  <!--            <td v-for="(timeSlot, index) in timeSlots" :key="index" class="table-cell border px-2">-->
+  <!--              <div>-->
+  <!--                <div-->
+  <!--                    v-for="entry in getEntriesInTimeSlot(weekdayTimetable.entries, timeSlot)"-->
+  <!--                    :key="entry.subjectid + '-' + index"-->
+  <!--                    class="flex flex-col"-->
+  <!--                >-->
+  <!--                  <p>-->
+  <!--                    <template v-if="shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.isMatch">-->
+  <!--                      <template v-if="shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.auditorija === '-'">-->
+  <!--                        <span class="line-through">{{ entry.subjectid }},</span>-->
+  <!--                        <span class="font-bold line-through">-->
+  <!--                          {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}-->
+  <!--                        </span>-->
+  <!--                        <p class="bg-red-500 text-black font-light p-1">-->
+  <!--                          {{ shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.destytojas }}-->
+  <!--                        </p>-->
+  <!--                      </template>-->
+  <!--                      <template v-else>-->
+  <!--                        <div class="bg-yellow-400 text-black font-light p-1">-->
+  <!--                          <span>{{ entry.subjectid }},</span>-->
+  <!--                          <span class="font-bold">-->
+  <!--                            {{ shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.auditorija }}-->
+  <!--                            {{ entry.groupnames.join(', ') }},-->
+  <!--                            {{ shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.destytojas }}-->
+  <!--                          </span>-->
+  <!--                          <p v-if="!shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.isGroupEnglish">-->
+  <!--                            Pasikeitė auditorija-->
+  <!--                          </p>-->
+  <!--                          <p v-else>-->
+  <!--                            The classroom has changed-->
+  <!--                          </p>-->
+  <!--                        </div>-->
+  <!--                      </template>-->
+  <!--                    </template>-->
+  <!--                    <template v-else>-->
+  <!--                      {{ entry.subjectid }},-->
+  <!--                      <span class="font-bold">-->
+  <!--                        {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}-->
+  <!--                      </span>-->
+  <!--                    </template>-->
+  <!--                  </p>-->
+  <!--                </div>-->
+  <!--              </div>-->
+  <!--            </td>-->
+  <!--          </tr>-->
+  <!--          </tbody>-->
+  <!--        </table>-->
+  <!--      </div>-->
+  <!--    </template>-->
+  <!--  </div>-->
 </template>
 
 <style scoped>
 
-
 .timetable-table {
   width: 100%;
   border-collapse: collapse;
+
 }
 
 .table-header {
@@ -581,10 +538,8 @@ onMounted(async () => {
   font-size: 0.65rem;
   font-weight: lighter;
   height: 70px;
-  color: white;
+  color: black;
   border: 0.01rem solid gray;
-  background: black;
-
 }
 
 th {
