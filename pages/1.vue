@@ -30,13 +30,29 @@ interface TimetableResponse {
   timetable: WeekdayTimetable[];      // Array of timetables for different weekdays
 }
 
+interface Todo {
+  id: string;
+  date: string;
+  paskaita: string;
+  destytojas: string;
+  auditorija: string;
+  grupe: string;
+}
+
+
 import {ref as dbRef, query, orderByChild, onValue} from 'firebase/database';
 
 import moment from "moment";
 import 'moment/dist/locale/lt';
 
-const todos = ref([]); // All todos
-const filteredTodos = ref([]); // Filtered todos
+// const todos = ref([]); // All todos
+// const filteredTodos = ref([]); // Filtered todos
+
+const todos = ref<Todo[]>([]); // All todos
+const filteredTodos = ref<Todo[]>([]); // Filtered todos
+
+
+
 
 // Access Firebase database via $firebaseDb
 const {$firebaseDb} = useNuxtApp();
@@ -45,10 +61,10 @@ const fetchTodos = async () => {
   const dbRefPath = dbRef($firebaseDb, 'user-posts');
   const q = query(dbRefPath, orderByChild('paskaita'));
 
-  return new Promise((resolve) => {
+  return new Promise<void>((resolve) => {
     // Fetch data from the Firebase Realtime Database
     onValue(q, (snapshot) => {
-      const temp = [];
+      const temp: Todo[] = []; // Temporary array with Todo type
       snapshot.forEach((data) => {
         const obj = data.val();
         const formattedDate = transformDate(obj.date); // Transform the date before adding it
@@ -63,7 +79,7 @@ const fetchTodos = async () => {
         });
       });
 
-      todos.value = temp; // Update the todos
+      todos.value = temp; // Update the todos with the typed array
       resolve(); // Resolve the promise once data is fetched
     });
   });
@@ -100,53 +116,6 @@ const filterTodosByCurrentWeek = () => {
   });
 };
 
-const getEntriesInTimeSlot = (entries, timeSlot) => {
-  const results = [];
-  for (const key in entries) {
-    if (entries.hasOwnProperty(key)) {
-      const [startTime, endTime] = key.split('-'); // Split the time key into start and end time
-
-      // Check if the current time slot falls within the start and end time
-      if (timeSlot >= startTime && timeSlot < endTime) {
-        results.push(...entries[key]); // Push all entries that fit the criteria
-      }
-    }
-  }
-  return results;
-};
-
-// const getLithuanianWeekday = (dateString) => {
-//
-//   const weekday = moment(dateString).format('dddd');
-//   return weekday.charAt(0).toUpperCase() + weekday.slice(1); // Capitalize the first letter
-// };
-
-
-// Ref for storing final classrooms data
-//const finalClassrooms = ref<TimetableEntry[]>([]);
-// const groupedClassrooms = ref<{ [classid: string]: { [date: string]: { [starttime: string]: TimetableEntry[] } } }>({});
-// const timeSlots = ref<string[]>([]); // To hold unique time slots
-
-
-// Function to add minutes to a time string
-// function addMinutes(timeString: string, minutes: number): string {
-//   const [hours, minutesPart] = timeString.split(':').map(Number);
-//   const totalMinutes = hours * 60 + minutesPart + minutes;
-//   const newHours = Math.floor(totalMinutes / 60) % 24; // Wrap around to 24-hour format
-//   const newMinutes = totalMinutes % 60;
-//   return `${newHours.toString().padStart(2, '0')}:${newMinutes.toString().padStart(2, '0')}`;
-// }
-
-// Computed property to generate time ranges
-// const timeRanges = computed(() => {
-//   return timeSlots.value.map((timeSlot: string) => { // Specify the type of timeSlot
-//     const startTime = timeSlot; // Starting time
-//     const endTime = addMinutes(startTime, 90); // Adding 1 hour and 30 minutes
-//     return `${startTime} - ${endTime}`;
-//   });
-// });
-
-
 function shouldCheckClassroom(currentDate: string | number, classid: string | number, index: number) {
   const parseDateToUTC = (dateStr: string | number): string => {
     const parsedDate = new Date(Date.parse(dateStr + " UTC"));
@@ -161,8 +130,6 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
     let isGroupEqual = false;
     const groupId = classid.toString();
 
-    //console.log(classroom.destytojas);
-
 
     if (!groupId.includes('.')) {
       isGroupEqual = groupId.trim() === classroom.grupe.trim();
@@ -172,28 +139,6 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
 
     const isLectureEqual = classroom.paskaita === String(index + 1);
 
-
-    // const parsedEntries: TimetableEntry[] = [
-    //   {
-    //     date: formattedClassroomDate,
-    //     uniperiod: classroom.paskaita,
-    //     subjectid: '',
-    //     groupnames: 'Group A',
-    //     teacherids: classroom.destytojas,
-    //     classroomids: classroom.auditorija,
-    //     dayname: 'Monday'
-    //   },
-    //   // Add more entries as needed
-    // ];
-    //
-    // appendEntries(parsedEntries, formattedClassroomDate);
-
-
-
-    // const isLecturerExists = classroom.destytojas.includes('Paskaitos nėra');
-    // if(!isLecturerExists) {
-    // //  console.log(classroom);
-    // }
 
     return {
       classroom,
@@ -209,10 +154,8 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
 
 
 function doesFirstWordEndWithE(grupe: string): boolean {
-  // Split the string into words based on spaces
-  const words = grupe.trim().split(" ");
 
-  // Check if there's at least one word and if the first word ends with 'E'
+  const words = grupe.trim().split(" ");
   return words.length > 0 && words[0].endsWith("E");
 }
 
@@ -228,7 +171,6 @@ const timeRanges = ref([
 ]);
 
 
-
 // Function to check if an entry already exists in the timetable
 function entryExists(timetable: TimetableResponse, newEntry: TimetableEntry, weekday: string): boolean {
   const dayTimetable = timetable.timetable.find(day => day.weekday === weekday);
@@ -239,27 +181,6 @@ function entryExists(timetable: TimetableResponse, newEntry: TimetableEntry, wee
       entry.teacherids === newEntry.teacherids
   ) ?? false;
 }
-
-// Function to append entries from parsed list if they don’t already exist
-function appendEntries(newEntries: TimetableEntry[], weekday: string) {
-  //if (!timetable.value) return;
-
-  console.log("VISKAS OK")
-
-  // Create a new weekday if it doesn't exist
-
-  // TODO NEED TO FIX
-    newEntries.forEach(newEntry => {
-
-        timetable.value?.timetable.entries.push(newEntry);
-
-  });
-}
-
-
-
-
-
 
 
 const timetable = ref<TimetableResponse | null>(null);
@@ -273,24 +194,49 @@ const fetchTimetable = async () => {
     const data: TimetableResponse = await response.json();
     timetable.value = data;
 
-    // Iterate over filteredTodos to append non-duplicate entries
-    filteredTodos.value.forEach((classroom) => {
-      const formattedDate = transformDate(classroom.date);
-      const parsedEntries: TimetableEntry[] = [
-        {
-          date: formattedDate,
-          uniperiod: classroom.paskaita,
-          subjectid: '',
-          groupnames: 'Group A',
-          teacherids: classroom.destytojas,
-          classroomids: classroom.auditorija,
-          dayname: 'Monday' // adjust dayname as needed
-        }
-      ];
+    if (filteredTodos.value.length > 0) {
 
-      // Append entries if they don't already exist
-      appendEntries(parsedEntries, formattedDate);
-    });
+
+      //console.log('IRASU YRA')
+      filteredTodos.value.forEach((classroom) => {
+
+
+        //console.log('stebimas', filteredTodos);
+
+        // const parsedEntry: TimetableEntry = {
+        //   date: '2024-10-30',
+        //   uniperiod: classroom.paskaita,
+        //   subjectid: '',
+        //   groupnames: '',
+        //   teacherids: classroom.destytojas,
+        //   classroomids: classroom.auditorija,
+        //   dayname: 'Trečiadienis' // adjust dayname as needed
+        // };
+
+        // Example usage:
+        const newEntry = {
+          date: classroom.date,
+          uniperiod: classroom.paskaita,         // Period to check for
+          subjectid: classroom.destytojas,
+          groupnames: "",
+          teacherids: "New Teacher",
+          classroomids: classroom.auditorija,
+          dayname: "Trečiadienis"
+        };
+        addTimetableEntry(timetable.value, classroom.grupe, classroom.date, newEntry);
+
+
+
+
+
+        //console.log(timetable.value)
+
+
+
+
+
+      });
+    }
 
   } catch (error) {
     console.error('Failed to fetch timetable:', error);
@@ -298,33 +244,72 @@ const fetchTimetable = async () => {
 };
 
 
-onMounted(async () => {
-  await fetchTimetable();
-  moment.locale('lt');
-  await fetchTodos(); // Wait for todos to be fetched
-  //console.log('Filtered todos:', filteredTodos.value); // Log filteredTodos
+function addTimetableEntry(timetableData, newGroupName, newWeekday, newEntry) {
+  const groupTimetable = timetableData.find(
+      item => item.group.name === newGroupName
+  );
 
+  // If no timetable exists for this group and weekday, create a new entry
+  if (!groupTimetable) {
+    timetableData.push({
+      group: {
+        id: "-922", // or use dynamic id
+        name: newGroupName,
+        short: newGroupName
+      },
+      timetable: [{
+        weekday: newWeekday,
+        entries: [newEntry]
+      }]
+    });
+    return timetableData;
+  }
+
+  // Find the specific weekday timetable
+  const weekdayTimetable = groupTimetable.timetable.find(
+      day => day.weekday === newWeekday
+  );
+
+  // If no weekday timetable exists, add one with the new entry
+  if (!weekdayTimetable) {
+    groupTimetable.timetable.push({
+      weekday: newWeekday,
+      entries: [newEntry]
+    });
+    return timetableData;
+  }
+
+  // Check if there's already an entry with the same uniperiod
+  const entryExists = weekdayTimetable.entries.some(
+      entry => entry.uniperiod === newEntry.uniperiod
+  );
+
+  // If no matching entry in the same uniperiod, add the new entry
+  if (!entryExists) {
+    weekdayTimetable.entries.push(newEntry);
+  } else {
+    console.log('Entry already exists for this period');
+  }
+
+  return timetableData;
+}
+
+
+
+
+
+onMounted(async () => {
+  moment.locale('lt');
+
+  await fetchTodos();
+  filterTodosByCurrentWeek();
+  await fetchTimetable();
+
+  console.log('Filtered Todos after onMounted:', filteredTodos.value); // Check if populated
 
 });
 
 
-// Fetch data when the component is mounted
-// onMounted(async () => {
-//   moment.locale('lt');
-//
-//   const classroomIds = await fetchGroupIds(); // Get the group IDs
-//   if (classroomIds.length > 0) { // Check if the array is not empty
-//     await fetchClassroomData(classroomIds); // Fetch classroom data with valid IDs
-//     await fetchTodos(); // Wait for todos to be fetched
-//     console.log('Filtered todos:', filteredTodos.value); // Log filteredTodos
-//
-//
-//   }
-// });
-
-// onMounted(() => {
-//   fetchTodos();
-// });
 </script>
 
 <template>
@@ -362,7 +347,7 @@ onMounted(async () => {
         <table class="timetable-table min-w-full">
           <thead class="bg-black text-white">
           <tr>
-            <th class="border">{{ group.group.name }} </th>
+            <th class="border">{{ group.group.name }}</th>
             <th
                 class="table-header border py-2 font-bold text-center"
                 v-for="(slot, index) in timeRanges"
@@ -386,7 +371,8 @@ onMounted(async () => {
                 >
 
                   <template v-if="entry?.uniperiod === String(index + 1)">
-                    <template v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isMatch">
+                    <template
+                        v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isMatch">
                       <template
                           v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija === '-'">
                         <span class="line-through">{{ entry.subjectid }},</span>
@@ -394,7 +380,9 @@ onMounted(async () => {
                                             {{ entry.classroomids }} {{ entry.groupnames }}
                                           </span>
                         <p class="bg-red-500 text-black font-light p-1">
-                          {{ shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.destytojas }}
+                          {{
+                            shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
+                          }}
                         </p>
                       </template>
                       <template v-else>
@@ -402,11 +390,11 @@ onMounted(async () => {
                           <span>{{ entry.subjectid }},</span>
                           <span class="font-bold">
                                               {{
-                              shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija
+                              shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.auditorija
                             }}
                                               {{ entry.groupnames }},
                                               {{
-                              shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.destytojas
+                              shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
                             }}
                                             </span>
                           <p v-if="!shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isGroupEnglish">
@@ -426,7 +414,6 @@ onMounted(async () => {
                                         </span>
                     </template>
                   </template>
-
 
 
                 </div>
