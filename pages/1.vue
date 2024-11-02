@@ -52,8 +52,6 @@ const todos = ref<Todo[]>([]); // All todos
 const filteredTodos = ref<Todo[]>([]); // Filtered todos
 
 
-
-
 // Access Firebase database via $firebaseDb
 const {$firebaseDb} = useNuxtApp();
 
@@ -127,18 +125,19 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
   const results = filteredTodos.value.map((classroom) => {
     const formattedClassroomDate = parseDateToUTC(classroom.date);
     const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
-    let isGroupEqual = false;
-    const groupId = classid.toString();
 
+    const groupId = classid.toString();
+    const classroomGroups = classroom.grupe.split(',').map(group => group.trim());
+    let isGroupEqual = false;
 
     if (!groupId.includes('.')) {
-      isGroupEqual = groupId.trim() === classroom.grupe.trim();
+      isGroupEqual = classroomGroups.includes(groupId.trim());
     } else {
-      isGroupEqual = groupId.trim() === classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
+      const normalizedGroupId = groupId.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
+      isGroupEqual = classroomGroups.includes(normalizedGroupId);
     }
 
     const isLectureEqual = classroom.paskaita === String(index + 1);
-
 
     return {
       classroom,
@@ -152,7 +151,6 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
   return matches.length > 0 ? matches[0] : null;
 }
 
-
 function doesFirstWordEndWithE(grupe: string): boolean {
 
   const words = grupe.trim().split(" ");
@@ -162,25 +160,13 @@ function doesFirstWordEndWithE(grupe: string): boolean {
 
 const timeRanges = ref([
   '08:30 - 10:00',
-  '09:45 - 11:15',
-  '11:30 - 13:00',
-  '13:15 - 14:45',
-  '15:00 - 16:30',
-  '16:45 - 18:15',
-  '18:30 - 20:00'
+  '10:15 - 11:45',
+  '12:30 - 14:00',
+  '14:15 - 15:45',
+  '16:00 - 17:30',
+  '17:45 - 19:15',
+  '19:30 - 20:45'
 ]);
-
-
-// Function to check if an entry already exists in the timetable
-function entryExists(timetable: TimetableResponse, newEntry: TimetableEntry, weekday: string): boolean {
-  const dayTimetable = timetable.timetable.find(day => day.weekday === weekday);
-  return dayTimetable?.entries.some(entry =>
-      entry.date === newEntry.date &&
-      entry.uniperiod === newEntry.uniperiod &&
-      entry.classroomids === newEntry.classroomids &&
-      entry.teacherids === newEntry.teacherids
-  ) ?? false;
-}
 
 
 const timetable = ref<TimetableResponse | null>(null);
@@ -195,25 +181,8 @@ const fetchTimetable = async () => {
     timetable.value = data;
 
     if (filteredTodos.value.length > 0) {
-
-
-      //console.log('IRASU YRA')
       filteredTodos.value.forEach((classroom) => {
 
-
-        //console.log('stebimas', filteredTodos);
-
-        // const parsedEntry: TimetableEntry = {
-        //   date: '2024-10-30',
-        //   uniperiod: classroom.paskaita,
-        //   subjectid: '',
-        //   groupnames: '',
-        //   teacherids: classroom.destytojas,
-        //   classroomids: classroom.auditorija,
-        //   dayname: 'Trečiadienis' // adjust dayname as needed
-        // };
-
-        // Example usage:
         const newEntry = {
           date: classroom.date,
           uniperiod: classroom.paskaita,         // Period to check for
@@ -224,19 +193,9 @@ const fetchTimetable = async () => {
           dayname: "Trečiadienis"
         };
         addTimetableEntry(timetable.value, classroom.grupe, classroom.date, newEntry);
-
-
-
-
-
-        //console.log(timetable.value)
-
-
-
-
-
       });
     }
+    filterTodosByCurrentWeek();
 
   } catch (error) {
     console.error('Failed to fetch timetable:', error);
@@ -295,9 +254,6 @@ function addTimetableEntry(timetableData, newGroupName, newWeekday, newEntry) {
 }
 
 
-
-
-
 onMounted(async () => {
   moment.locale('lt');
 
@@ -305,7 +261,7 @@ onMounted(async () => {
   filterTodosByCurrentWeek();
   await fetchTimetable();
 
-  console.log('Filtered Todos after onMounted:', filteredTodos.value); // Check if populated
+  //console.log('Filtered Todos after onMounted:', filteredTodos.value); // Check if populated
 
 });
 
@@ -313,198 +269,96 @@ onMounted(async () => {
 </script>
 
 <template>
-  <!--  <div>-->
-  <!--    <div v-if="finalClassrooms.length === 0">Loading or no classrooms found.</div>-->
-  <!--  </div>-->
-
-
-  <!--  <div>-->
-  <!--    <template v-if="timetable">-->
-  <!--      <div v-for="item in timetable" :key="item.group.id">-->
-  <!--        <h2>{{ item.group.name }}</h2>-->
-  <!--        <div v-for="day in item.timetable" :key="day.weekday">-->
-  <!--          <h3>{{ day.weekday }}</h3>-->
-  <!--          <ul>-->
-  <!--            <li v-for="entry in day.entries" :key="entry.uniperiod">-->
-  <!--              {{ entry.subjectid }} - {{ entry.teacherids }}-->
-  <!--            </li>-->
-  <!--          </ul>-->
-  <!--        </div>-->
-  <!--      </div>-->
-  <!--    </template>-->
-  <!--    <template v-else>-->
-  <!--      <p>Loading timetable...</p> &lt;!&ndash; Loading state &ndash;&gt;-->
-  <!--    </template>-->
-  <!--  </div>-->
-
-
-  <!--  {{timetable}}-->
 
 
   <div class="grid grid-cols-4 gap-2">
     <template v-for="group in timetable" :key="group.group.id">
-      <div class="overflow-hidden">
-        <table class="timetable-table min-w-full">
-          <thead class="bg-black text-white">
-          <tr>
-            <th class="border">{{ group.group.name }}</th>
-            <th
-                class="table-header border py-2 font-bold text-center"
-                v-for="(slot, index) in timeRanges"
-                :key="index"
-            >
-              <div class="lecture-title font-medium">{{ index + 1 }} paskaita</div>
-              <div class="time-slot text-gray-400">{{ slot }}</div>
-            </th>
-          </tr>
-          </thead>
-          <tbody>
-          <template v-for="weekday in group.timetable" :key="weekday.weekday">
-            <tr>
-              <td class="table-cell border px-4 font-bold">
-                {{ weekday.entries?.[0]?.dayname || 'N/A' }}<br/>{{ weekday.entries?.[0]?.date || 'N/A' }}
-              </td>
-              <td v-for="(timeSlot, index) in timeRanges" :key="index" class="table-cell border px-2">
-                <div
-                    v-for="entry in (weekday.entries || [])"
-                    :key="entry?.subjectid || index"
-                >
 
-                  <template v-if="entry?.uniperiod === String(index + 1)">
-                    <template
-                        v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isMatch">
+      <template v-if="group.group.name.split(' ').length === 1">
+        <div class="overflow-hidden">
+          <table class="timetable-table min-w-full">
+            <thead class="bg-black text-white">
+            <tr>
+              <th class="border">{{ group.group.name }}</th>
+              <th
+                  class="table-header border py-2 font-bold text-center"
+                  v-for="(slot, index) in timeRanges"
+                  :key="index"
+              >
+                <div class="lecture-title font-medium">{{ index + 1 }} paskaita</div>
+                <div class="time-slot text-gray-400">{{ slot }}</div>
+              </th>
+            </tr>
+            </thead>
+            <tbody>
+            <template v-for="weekday in group.timetable" :key="weekday.weekday">
+              <tr>
+                <td class="table-cell border px-4 font-bold">
+                  {{ weekday.entries?.[0]?.dayname || 'N/A' }}<br/>{{ weekday.entries?.[0]?.date || 'N/A' }}
+                </td>
+                <td v-for="(timeSlot, index) in timeRanges" :key="index" class="table-cell border px-2">
+                  <div
+                      v-for="entry in (weekday.entries || [])"
+                      :key="entry?.subjectid || index"
+                  >
+
+                    <template v-if="entry?.uniperiod === String(index + 1)">
                       <template
-                          v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija === '-'">
-                        <span class="line-through">{{ entry.subjectid }},</span>
-                        <span class="font-bold line-through">
+                          v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isMatch">
+                        <template
+                            v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija === '-'">
+                          <span class="line-through">{{ entry.subjectid }},</span>
+                          <span class="font-bold line-through">
                                             {{ entry.classroomids }} {{ entry.groupnames }}
                                           </span>
-                        <p class="bg-red-500 text-black font-light p-1">
-                          {{
-                            shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
-                          }}
-                        </p>
-                      </template>
-                      <template v-else>
-                        <div class="bg-yellow-400 text-black font-light p-1">
-                          <span>{{ entry.subjectid }},</span>
-                          <span class="font-bold">
-                                              {{
-                              shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.auditorija
-                            }}
-                                              {{ entry.groupnames }},
-                                              {{
+                          <p class="bg-red-500 text-black font-light p-1">
+                            {{
                               shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
                             }}
+                          </p>
+                        </template>
+                        <template v-else>
+                          <div class="bg-yellow-400 text-black font-light p-1">
+                            <span>{{ entry.subjectid }},</span>
+                            <span class="font-bold">
+                                              {{
+                                shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.auditorija
+                              }}
+                                              {{ entry.groupnames }},
+                                              {{
+                                shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
+                              }}
                                             </span>
-                          <p v-if="!shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isGroupEnglish">
-                            Pasikeitė auditorija
-                          </p>
-                          <p v-else>
-                            The classroom has changed
-                          </p>
-                        </div>
+                            <p v-if="!shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isGroupEnglish">
+                              Pasikeitė auditorija
+                            </p>
+                            <p v-else>
+                              The classroom has changed
+                            </p>
+                          </div>
+                        </template>
+                      </template>
+
+                      <template v-else>
+                        {{ entry.subjectid }},
+                        <span class="font-bold">
+                                          {{ entry.classroomids }} {{ entry.groupnames }}
+                                        </span>
                       </template>
                     </template>
 
-                    <template v-else>
-                      {{ entry.subjectid }},
-                      <span class="font-bold">
-                                          {{ entry.classroomids }} {{ entry.groupnames }}
-                                        </span>
-                    </template>
-                  </template>
 
-
-                </div>
-              </td>
-            </tr>
-          </template>
-          </tbody>
-        </table>
-      </div>
+                  </div>
+                </td>
+              </tr>
+            </template>
+            </tbody>
+          </table>
+        </div>
+      </template>
     </template>
   </div>
 
-
-  <!--  <div class="grid grid-cols-4 gap-2">-->
-  <!--    <template v-for="weekdayTimetable in timetable?.timetable" :key="weekdayTimetable.weekday">-->
-  <!--      <div class="overflow-hidden">-->
-  <!--        <table class="timetable-table min-w-full">-->
-  <!--          <thead class="bg-black text-white">-->
-  <!--          <tr>-->
-  <!--            <th class="border">{{ timetable?.group.name }}</th>-->
-  <!--            <th-->
-  <!--                class="table-header border py-2 font-bold text-center"-->
-  <!--                v-for="(timeSlot, index) in timeRanges"-->
-  <!--                :key="index"-->
-  <!--            >-->
-  <!--              <div class="lecture-title font-medium">-->
-  <!--                {{ index + 1 }} paskaita-->
-  <!--              </div>-->
-  <!--              <div class="time-slot text-gray-400">-->
-  <!--                {{ timeSlot }}-->
-  <!--              </div>-->
-  <!--            </th>-->
-  <!--          </tr>-->
-  <!--          </thead>-->
-
-  <!--          <tbody>-->
-  <!--          <tr v-for="entry in weekdayTimetable.entries" :key="entry.date">-->
-  <!--            <td class="table-cell border px-4">-->
-  <!--              {{ entry.dayname }}<br />{{ entry.date }}-->
-  <!--            </td>-->
-  <!--            <td v-for="(timeSlot, index) in timeSlots" :key="index" class="table-cell border px-2">-->
-  <!--              <div>-->
-  <!--                <div-->
-  <!--                    v-for="entry in getEntriesInTimeSlot(weekdayTimetable.entries, timeSlot)"-->
-  <!--                    :key="entry.subjectid + '-' + index"-->
-  <!--                    class="flex flex-col"-->
-  <!--                >-->
-  <!--                  <p>-->
-  <!--                    <template v-if="shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.isMatch">-->
-  <!--                      <template v-if="shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.auditorija === '-'">-->
-  <!--                        <span class="line-through">{{ entry.subjectid }},</span>-->
-  <!--                        <span class="font-bold line-through">-->
-  <!--                          {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}-->
-  <!--                        </span>-->
-  <!--                        <p class="bg-red-500 text-black font-light p-1">-->
-  <!--                          {{ shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.destytojas }}-->
-  <!--                        </p>-->
-  <!--                      </template>-->
-  <!--                      <template v-else>-->
-  <!--                        <div class="bg-yellow-400 text-black font-light p-1">-->
-  <!--                          <span>{{ entry.subjectid }},</span>-->
-  <!--                          <span class="font-bold">-->
-  <!--                            {{ shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.auditorija }}-->
-  <!--                            {{ entry.groupnames.join(', ') }},-->
-  <!--                            {{ shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.classroom.destytojas }}-->
-  <!--                          </span>-->
-  <!--                          <p v-if="!shouldCheckClassroom(entry.date, entry.classroomids.join(', '), index)?.isGroupEnglish">-->
-  <!--                            Pasikeitė auditorija-->
-  <!--                          </p>-->
-  <!--                          <p v-else>-->
-  <!--                            The classroom has changed-->
-  <!--                          </p>-->
-  <!--                        </div>-->
-  <!--                      </template>-->
-  <!--                    </template>-->
-  <!--                    <template v-else>-->
-  <!--                      {{ entry.subjectid }},-->
-  <!--                      <span class="font-bold">-->
-  <!--                        {{ entry.classroomids.join(', ') }} {{ entry.groupnames.join(', ') }}-->
-  <!--                      </span>-->
-  <!--                    </template>-->
-  <!--                  </p>-->
-  <!--                </div>-->
-  <!--              </div>-->
-  <!--            </td>-->
-  <!--          </tr>-->
-  <!--          </tbody>-->
-  <!--        </table>-->
-  <!--      </div>-->
-  <!--    </template>-->
-  <!--  </div>-->
 </template>
 
 <style scoped>
