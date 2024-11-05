@@ -253,10 +253,35 @@ function addTimetableEntry(timetableData, newGroupName, newWeekday, newEntry) {
   return timetableData;
 }
 
+const weekRange = ref('');
+
+const calculateWeekRange = () => {
+  const currentDate = new Date();
+  const firstDayOfWeek = new Date(currentDate.setDate(currentDate.getDate() - currentDate.getDay()));
+  const lastDayOfWeek = new Date(firstDayOfWeek);
+  lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
+
+  const options = { year: 'numeric', month: 'long', day: 'numeric', locale: 'lt-LT' };
+  weekRange.value = `${firstDayOfWeek.toLocaleDateString('lt-LT', options)} - ${lastDayOfWeek.toLocaleDateString('lt-LT', options)}`;
+};
+
+const time = ref('')
+
+// Function to update time in HH:MM:SS format
+const updateClock = () => {
+  const now = new Date()
+  const hours = String(now.getHours()).padStart(2, '0')
+  const minutes = String(now.getMinutes()).padStart(2, '0')
+  const seconds = String(now.getSeconds()).padStart(2, '0')
+  time.value = `${hours}:${minutes}:${seconds}`
+}
+
 
 onMounted(async () => {
   moment.locale('lt');
-
+  calculateWeekRange();
+  updateClock() // Set initial time
+  setInterval(updateClock, 1000) // Update every second
   await fetchTodos();
   filterTodosByCurrentWeek();
   await fetchTimetable();
@@ -270,7 +295,27 @@ onMounted(async () => {
 
 <template>
 
+  <header class="flex flex-col md:flex-row items-center justify-between  border pl-5 pt-2 pb-2 pr-2 bg-gray-800 text-white shadow-md">
+    <!-- Main Content: Week and Time -->
+    <div class="flex items-center mb-2 md:mb-0">
+      <h1 class="text-lg font-semibold">
+        Dabartinė savaitė: <span>{{ weekRange }}</span>
+      </h1>
+    </div>
+    <div class="text-lg font-semibold mb-2 md:mb-0 bg-cyan-500 p-1">{{ time }}</div>
 
+    <!-- Legend Section Inside Header -->
+    <div class="flex items-center space-x-4">
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-yellow-500 rounded-full mr-2"></div>
+        <span class="text-sm">Paskaitų pakeitimai (Lecture Changes)</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
+        <span class="text-sm">Paskaitos nėra (No Lecture)</span>
+      </div>
+    </div>
+  </header>
   <div class="grid grid-cols-4 gap-2">
     <template v-for="group in timetable" :key="group.group.id">
 
@@ -281,7 +326,7 @@ onMounted(async () => {
             <tr>
               <th class="border">{{ group.group.name }}</th>
               <th
-                  class="table-header border py-2 font-bold text-center"
+                  class="table-header font-bold text-center"
                   v-for="(slot, index) in timeRanges"
                   :key="index"
               >
