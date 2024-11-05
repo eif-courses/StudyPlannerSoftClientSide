@@ -265,23 +265,25 @@ const calculateWeekRange = () => {
   weekRange.value = `${firstDayOfWeek.toLocaleDateString('lt-LT', options)} - ${lastDayOfWeek.toLocaleDateString('lt-LT', options)}`;
 };
 
-const time = ref('')
+const time = ref<string>('')
 
-// Function to update time in HH:MM:SS format
 const updateClock = () => {
   const now = new Date()
   const hours = String(now.getHours()).padStart(2, '0')
   const minutes = String(now.getMinutes()).padStart(2, '0')
   const seconds = String(now.getSeconds()).padStart(2, '0')
+
   time.value = `${hours}:${minutes}:${seconds}`
 }
 
+let interval: ReturnType<typeof setInterval>
 
 onMounted(async () => {
   moment.locale('lt');
   calculateWeekRange();
   updateClock() // Set initial time
-  setInterval(updateClock, 1000) // Update every second
+  interval = setInterval(updateClock, 1000)
+ // Update every second
   await fetchTodos();
   filterTodosByCurrentWeek();
   await fetchTimetable();
@@ -289,7 +291,9 @@ onMounted(async () => {
   //console.log('Filtered Todos after onMounted:', filteredTodos.value); // Check if populated
 
 });
-
+onUnmounted(() => {
+  clearInterval(interval)
+})
 
 </script>
 
