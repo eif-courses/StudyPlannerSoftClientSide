@@ -90,6 +90,7 @@ const transformDate = (dateStr: string | number): string => {
 
 
 watch(todos, () => {
+  fetchTimetable();
   filterTodosByCurrentWeek();
 });
 
