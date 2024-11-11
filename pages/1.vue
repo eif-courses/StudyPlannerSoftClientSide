@@ -165,8 +165,7 @@ const timeRanges = ref([
   '12:30 - 14:00',
   '14:15 - 15:45',
   '16:00 - 17:30',
-  '17:45 - 19:15',
-  '19:30 - 20:45'
+  '17:45 - 19:15'
 ]);
 
 
@@ -277,6 +276,15 @@ const updateClock = () => {
   time.value = `${hours}:${minutes}:${seconds}`
 }
 
+
+
+const isCurrentDay = (dateString:string) =>{
+  return moment(dateString).isSame(moment(), 'day');
+}
+
+
+
+
 let interval: ReturnType<typeof setInterval>
 
 onMounted(async () => {
@@ -301,10 +309,9 @@ onUnmounted(() => {
 <template>
 
   <header class="flex flex-col md:flex-row items-center justify-between  border pl-5 pt-2 pb-2 pr-2 bg-gray-800 text-white shadow-md">
-    <!-- Main Content: Week and Time -->
     <div class="flex items-center mb-2 md:mb-0">
       <h1 class="text-lg font-semibold">
-        Dabartinė savaitė: <span>{{ weekRange }}</span>
+        Einamoji savaitė: <span>{{ weekRange }}</span>
       </h1>
     </div>
     <div class="text-lg font-semibold mb-2 md:mb-0 bg-cyan-500 p-1">{{ time }}</div>
@@ -318,6 +325,10 @@ onUnmounted(() => {
       <div class="flex items-center">
         <div class="w-4 h-4 bg-red-500 rounded-full mr-2"></div>
         <span class="text-sm">Paskaitos nėra (No Lecture)</span>
+      </div>
+      <div class="flex items-center">
+        <div class="w-4 h-4 bg-cyan-100 rounded-full mr-2"></div>
+        <span class="text-sm">Šiandien (Today)</span>
       </div>
     </div>
   </header>
@@ -336,17 +347,24 @@ onUnmounted(() => {
                   :key="index"
               >
                 <div class="lecture-title font-medium">{{ index + 1 }} paskaita</div>
-                <div class="time-slot text-gray-400">{{ slot }}</div>
+                <div class="time-slot">{{ slot }}</div>
               </th>
             </tr>
             </thead>
             <tbody>
             <template v-for="weekday in group.timetable" :key="weekday.weekday">
               <tr>
-                <td class="table-cell border px-4 font-bold">
+
+
+                <td v-if="isCurrentDay(weekday.weekday)" style="font-weight: bold!important;" class="table-cell border px-4 py-2 bg-cyan-100">
                   {{ weekday.entries?.[0]?.dayname || 'N/A' }}<br/>{{ weekday.entries?.[0]?.date || 'N/A' }}
                 </td>
-                <td v-for="(timeSlot, index) in timeRanges" :key="index" class="table-cell border px-2">
+                <td v-else class="table-cell border px-4 font-bold">
+                  {{ weekday.entries?.[0]?.dayname || 'N/A' }}<br/>{{ weekday.entries?.[0]?.date || 'N/A' }}
+                </td>
+
+
+                <td v-if="isCurrentDay(weekday.weekday)" v-for="(timeSlot, index) in timeRanges" :key="index" class="table-cell bg-cyan-100 px-1">
                   <div
                       v-for="entry in (weekday.entries || [])"
                       :key="entry?.subjectid || index"
@@ -400,6 +418,62 @@ onUnmounted(() => {
 
                   </div>
                 </td>
+                <td v-else v-for="(timeSlot, index) in timeRanges" :key="timeSlot.length" class="table-cell px-1">
+                  <div
+                      v-for="entry in (weekday.entries || [])"
+                      :key="entry?.subjectid || index"
+                  >
+
+                    <template v-if="entry?.uniperiod === String(index + 1)">
+                      <template
+                          v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isMatch">
+                        <template
+                            v-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.auditorija === '-'">
+                          <span class="line-through">{{ entry.subjectid }},</span>
+                          <span class="font-bold line-through">
+                                            {{ entry.classroomids }} {{ entry.groupnames }}
+                                          </span>
+                          <p class="bg-red-500 text-black font-light p-1">
+                            {{
+                              shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
+                            }}
+                          </p>
+                        </template>
+                        <template v-else>
+                          <div class="bg-yellow-400 text-black font-light p-1">
+                            <span>{{ entry.subjectid }},</span>
+                            <span class="font-bold">
+                                              {{
+                                shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.auditorija
+                              }}
+                                              {{ entry.groupnames }},
+                                              {{
+                                shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
+                              }}
+                                            </span>
+                            <p v-if="!shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.isGroupEnglish">
+                              Pasikeitė auditorija
+                            </p>
+                            <p v-else>
+                              The classroom has changed
+                            </p>
+                          </div>
+                        </template>
+                      </template>
+
+                      <template v-else>
+                        {{ entry.subjectid }},
+                        <span class="font-bold">
+                                          {{ entry.classroomids }} {{ entry.groupnames }}
+                                        </span>
+                      </template>
+                    </template>
+
+
+                  </div>
+                </td>
+
+
               </tr>
             </template>
             </tbody>
@@ -428,7 +502,7 @@ onUnmounted(() => {
 .table-cell {
   font-size: 0.65rem;
   font-weight: lighter;
-  height: 70px;
+  height: auto;
   color: black;
   border: 0.01rem solid gray;
 }
@@ -443,9 +517,7 @@ td {
   border: 0.01rem solid #ddd;
 }
 
-tr:nth-child(even) {
-  background-color: #f2f2f2;
-}
+
 
 
 </style>
