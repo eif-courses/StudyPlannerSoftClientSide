@@ -215,74 +215,52 @@ const fetchTimetable = async () => {
 };
 
 
-
-function preprocessGroupName(name) {
-  // Step 1: Replace "pogrupis" with "pogr."
-  let processedName = name.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
-
-  // Step 2: Remove the second word if no "pogr." in the string
-  if (!processedName.includes("pogr.")) {
-    const words = processedName.split(" ");
-    if (words.length > 1) {
-      words.splice(1, 1); // Remove the second word
-    }
-    processedName = words.join(" ");
-  }
-
-  return processedName;
-}
-
-
-
 function addTimetableEntry(timetableData, newGroupName, newWeekday, newEntry) {
+  const groupTimetable = timetableData.find(
+      item => item.group.name === newGroupName
+  );
 
-
-  const groupNames = newGroupName.split(",").map(group => preprocessGroupName(group.trim()));
-
-  groupNames.forEach(groupName => {
-    // Step 2: Check if a timetable exists for the group
-    const groupTimetable = timetableData.find(item => item.group.name === groupName);
-
-    console.log("Processed group name:", groupName);
-
-    // Step 3: If no timetable exists for this group, create a new one
-    if (!groupTimetable) {
-      timetableData.push({
-        group: {
-          id: "-922", // Or dynamically generate an ID
-          name: groupName,
-          short: groupName
-        },
-        timetable: [{
-          weekday: newWeekday,
-          entries: [newEntry]
-        }]
-      });
-      return; // Continue to the next group name
-    }
-
-    // Step 4: Check if a timetable exists for the given weekday
-    const weekdayTimetable = groupTimetable.timetable.find(day => day.weekday === newWeekday);
-
-    if (!weekdayTimetable) {
-      // If no timetable exists for this weekday, add it
-      groupTimetable.timetable.push({
+  // If no timetable exists for this group and weekday, create a new entry
+  if (!groupTimetable) {
+    timetableData.push({
+      group: {
+        id: "-922", // or use dynamic id
+        name: newGroupName,
+        short: newGroupName
+      },
+      timetable: [{
         weekday: newWeekday,
         entries: [newEntry]
-      });
-      return;
-    }
+      }]
+    });
+    return timetableData;
+  }
 
-    // Step 5: Check if the entry already exists for the same period
-    const entryExists = weekdayTimetable.entries.some(entry => entry.uniperiod === newEntry.uniperiod);
+  // Find the specific weekday timetable
+  const weekdayTimetable = groupTimetable.timetable.find(
+      day => day.weekday === newWeekday
+  );
 
-    if (!entryExists) {
-      // Add the entry if it doesn't exist
-      weekdayTimetable.entries.push(newEntry);
-    } else {
-      console.log("Entry already exists for this period");
-    }
-  });
+  // If no weekday timetable exists, add one with the new entry
+  if (!weekdayTimetable) {
+    groupTimetable.timetable.push({
+      weekday: newWeekday,
+      entries: [newEntry]
+    });
+    return timetableData;
+  }
+
+  // Check if there's already an entry with the same uniperiod
+  const entryExists = weekdayTimetable.entries.some(
+      entry => entry.uniperiod === newEntry.uniperiod
+  );
+
+  // If no matching entry in the same uniperiod, add the new entry
+  if (!entryExists) {
+    weekdayTimetable.entries.push(newEntry);
+  } else {
+    console.log('Entry already exists for this period');
+  }
 
   return timetableData;
 }

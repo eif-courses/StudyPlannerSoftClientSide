@@ -8,18 +8,6 @@ interface TimetableEntry {
   groupnames: string;    // Group names
   teacherids: string;    // Teacher IDs
   classroomids: string;  // Classroom IDs
-  type: string;
-
-  starttime: string;
-  endtime: string;
-
-  classids: string[];
-
-  igroupid: string;
-
-  colors: string[];
-
-
   dayname: string;       // The name of the day
 }
 
@@ -215,74 +203,52 @@ const fetchTimetable = async () => {
 };
 
 
-
-function preprocessGroupName(name) {
-  // Step 1: Replace "pogrupis" with "pogr."
-  let processedName = name.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
-
-  // Step 2: Remove the second word if no "pogr." in the string
-  if (!processedName.includes("pogr.")) {
-    const words = processedName.split(" ");
-    if (words.length > 1) {
-      words.splice(1, 1); // Remove the second word
-    }
-    processedName = words.join(" ");
-  }
-
-  return processedName;
-}
-
-
-
 function addTimetableEntry(timetableData, newGroupName, newWeekday, newEntry) {
+  const groupTimetable = timetableData.find(
+      item => item.group.name === newGroupName
+  );
 
-
-  const groupNames = newGroupName.split(",").map(group => preprocessGroupName(group.trim()));
-
-  groupNames.forEach(groupName => {
-    // Step 2: Check if a timetable exists for the group
-    const groupTimetable = timetableData.find(item => item.group.name === groupName);
-
-    console.log("Processed group name:", groupName);
-
-    // Step 3: If no timetable exists for this group, create a new one
-    if (!groupTimetable) {
-      timetableData.push({
-        group: {
-          id: "-922", // Or dynamically generate an ID
-          name: groupName,
-          short: groupName
-        },
-        timetable: [{
-          weekday: newWeekday,
-          entries: [newEntry]
-        }]
-      });
-      return; // Continue to the next group name
-    }
-
-    // Step 4: Check if a timetable exists for the given weekday
-    const weekdayTimetable = groupTimetable.timetable.find(day => day.weekday === newWeekday);
-
-    if (!weekdayTimetable) {
-      // If no timetable exists for this weekday, add it
-      groupTimetable.timetable.push({
+  // If no timetable exists for this group and weekday, create a new entry
+  if (!groupTimetable) {
+    timetableData.push({
+      group: {
+        id: "-922", // or use dynamic id
+        name: newGroupName,
+        short: newGroupName
+      },
+      timetable: [{
         weekday: newWeekday,
         entries: [newEntry]
-      });
-      return;
-    }
+      }]
+    });
+    return timetableData;
+  }
 
-    // Step 5: Check if the entry already exists for the same period
-    const entryExists = weekdayTimetable.entries.some(entry => entry.uniperiod === newEntry.uniperiod);
+  // Find the specific weekday timetable
+  const weekdayTimetable = groupTimetable.timetable.find(
+      day => day.weekday === newWeekday
+  );
 
-    if (!entryExists) {
-      // Add the entry if it doesn't exist
-      weekdayTimetable.entries.push(newEntry);
-    } else {
-      console.log("Entry already exists for this period");
-    }
-  });
+  // If no weekday timetable exists, add one with the new entry
+  if (!weekdayTimetable) {
+    groupTimetable.timetable.push({
+      weekday: newWeekday,
+      entries: [newEntry]
+    });
+    return timetableData;
+  }
+
+  // Check if there's already an entry with the same uniperiod
+  const entryExists = weekdayTimetable.entries.some(
+      entry => entry.uniperiod === newEntry.uniperiod
+  );
+
+  // If no matching entry in the same uniperiod, add the new entry
+  if (!entryExists) {
+    weekdayTimetable.entries.push(newEntry);
+  } else {
+    console.log('Entry already exists for this period');
+  }
 
   return timetableData;
 }
@@ -295,7 +261,7 @@ const calculateWeekRange = () => {
   const lastDayOfWeek = new Date(firstDayOfWeek);
   lastDayOfWeek.setDate(firstDayOfWeek.getDate() + 6);
 
-  const options = {year: 'numeric', month: 'long', day: 'numeric', locale: 'lt-LT'};
+  const options = { year: 'numeric', month: 'long', day: 'numeric', locale: 'lt-LT' };
   weekRange.value = `${firstDayOfWeek.toLocaleDateString('lt-LT', options)} - ${lastDayOfWeek.toLocaleDateString('lt-LT', options)}`;
 };
 
@@ -311,9 +277,12 @@ const updateClock = () => {
 }
 
 
-const isCurrentDay = (dateString: string) => {
+
+const isCurrentDay = (dateString:string) =>{
   return moment(dateString).isSame(moment(), 'day');
 }
+
+
 
 
 let interval: ReturnType<typeof setInterval>
@@ -323,7 +292,7 @@ onMounted(async () => {
   calculateWeekRange();
   updateClock() // Set initial time
   interval = setInterval(updateClock, 1000)
-  // Update every second
+ // Update every second
   await fetchTodos();
   filterTodosByCurrentWeek();
   await fetchTimetable();
@@ -339,8 +308,7 @@ onUnmounted(() => {
 
 <template>
 
-  <header
-      class="flex flex-col md:flex-row items-center justify-between  border pl-5 pt-2 pb-2 pr-2 bg-gray-800 text-white shadow-md">
+  <header class="flex flex-col md:flex-row items-center justify-between  border pl-5 pt-2 pb-2 pr-2 bg-gray-800 text-white shadow-md">
     <div class="flex items-center mb-2 md:mb-0">
       <h1 class="text-lg font-semibold">
         Einamoji savaitė: <span>{{ weekRange }}</span>
@@ -388,8 +356,7 @@ onUnmounted(() => {
               <tr>
 
 
-                <td v-if="isCurrentDay(weekday.weekday)" style="font-weight: bold!important;"
-                    class="table-cell border px-4 py-2 bg-cyan-100">
+                <td v-if="isCurrentDay(weekday.weekday)" style="font-weight: bold!important;" class="table-cell border px-4 py-2 bg-cyan-100">
                   {{ weekday.entries?.[0]?.dayname || 'N/A' }}<br/>{{ weekday.entries?.[0]?.date || 'N/A' }}
                 </td>
                 <td v-else class="table-cell border px-4 font-bold">
@@ -397,8 +364,7 @@ onUnmounted(() => {
                 </td>
 
 
-                <td v-if="isCurrentDay(weekday.weekday)" v-for="(timeSlot, index) in timeRanges" :key="index"
-                    class="table-cell bg-cyan-100 px-1">
+                <td v-if="isCurrentDay(weekday.weekday)" v-for="(timeSlot, index) in timeRanges" :key="index" class="table-cell bg-cyan-100 px-1">
                   <div
                       v-for="entry in (weekday.entries || [])"
                       :key="entry?.subjectid || index"
@@ -550,6 +516,8 @@ th {
 td {
   border: 0.01rem solid #ddd;
 }
+
+
 
 
 </style>
