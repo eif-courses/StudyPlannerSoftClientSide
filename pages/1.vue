@@ -215,7 +215,6 @@ const fetchTimetable = async () => {
 };
 
 
-
 function preprocessGroupName(name) {
   // Step 1: Replace "pogrupis" with "pogr."
   let processedName = name.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
@@ -231,7 +230,6 @@ function preprocessGroupName(name) {
 
   return processedName;
 }
-
 
 
 function addTimetableEntry(timetableData, newGroupName, newWeekday, newEntry) {
@@ -442,10 +440,22 @@ onUnmounted(() => {
                       </template>
 
                       <template v-else>
-                        {{ entry.subjectid }},
-                        <span class="font-bold">
+                        <template v-if="entry.teacherids === 'New Teacher'">
+
+                          <div class="bg-yellow-400 text-black font-light p-1">
+                            {{ entry.subjectid }},
+                            <span class="font-bold">
                                           {{ entry.classroomids }} {{ entry.groupnames }}
                                         </span>
+                          </div>
+                        </template>
+                        <template v-else>
+                          {{ entry.subjectid }},
+                          <span class="font-bold">
+                                          {{ entry.classroomids }} {{ entry.groupnames }}
+                                        </span>
+
+                        </template>
                       </template>
                     </template>
 
@@ -473,6 +483,21 @@ onUnmounted(() => {
                             }}
                           </p>
                         </template>
+
+                        <template
+                            v-else-if="shouldCheckClassroom(entry.date, group.group.name +' '+ entry.groupnames, index)?.classroom.id === '-922'">
+                          <span class="line-through">{{ entry.subjectid }},</span>
+                          <span class="font-bold line-through">
+                                            {{ entry.classroomids }} {{ entry.groupnames }}
+                                          </span>
+                          <p class="bg-lime-500 text-black font-light p-1">
+                            {{
+                              shouldCheckClassroom(entry.date, group.group.name + ' ' + entry.groupnames, index)?.classroom.destytojas
+                            }}
+                          </p>
+                        </template>
+
+
                         <template v-else>
                           <div class="bg-yellow-400 text-black font-light p-1">
                             <span>{{ entry.subjectid }},</span>
@@ -496,10 +521,26 @@ onUnmounted(() => {
                       </template>
 
                       <template v-else>
-                        {{ entry.subjectid }},
-                        <span class="font-bold">
+
+                        <template v-if="entry.teacherids === 'New Teacher'">
+
+                          <div class="bg-yellow-400 text-black font-light p-1">
+                          {{ entry.subjectid }},
+                          <span class="font-bold">
                                           {{ entry.classroomids }} {{ entry.groupnames }}
                                         </span>
+                          </div>
+                        </template>
+                        <template v-else>
+                            {{ entry.subjectid }},
+                            <span class="font-bold">
+                                          {{ entry.classroomids }} {{ entry.groupnames }}
+                                        </span>
+
+                        </template>
+
+
+
                       </template>
                     </template>
 
