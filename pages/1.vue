@@ -660,12 +660,12 @@ onUnmounted(() => {
 </template>
 <style scoped>
 .lecture-title {
-  font-size: 1em; /* Increased for TV visibility */
+  font-size: 0.65rem;
   font-weight: bold;
 }
 
 .time-slot {
-  font-size: 0.9em; /* Increased for TV visibility */
+  font-size: 0.65rem;
   font-weight: 600;
 }
 
@@ -675,142 +675,113 @@ onUnmounted(() => {
 }
 
 .table-header {
-  font-size: 0.8rem; /* Increased for TV */
+  font-size: 0.65rem;
   font-weight: bold;
-  border: 0.02rem solid white; /* Thicker borders for TV */
-  background-color: #1a1a1a; /* Darker header */
+  border: 0.01rem solid white;
+  background-color: #000000;
   color: #ffffff;
-  padding: 8px;
+  padding: 4px;
 }
 
 .table-cell {
-  font-size: 0.8rem; /* Increased for TV */
-  font-weight: 500; /* Medium weight for better readability */
-  height: 80px; /* Increased height */
+  font-size: 0.65rem;
+  font-weight: lighter;
+  height: auto;
   color: #000000;
-  border: 0.02rem solid #333333; /* Darker, thicker borders */
-  padding: 6px;
+  border: 0.01rem solid gray;
+  padding: 2px;
   vertical-align: top;
 }
 
 th {
-  background-color: #1a1a1a; /* Very dark header */
+  background-color: #000000;
   color: #ffffff;
   text-align: center;
-  font-size: 0.9rem; /* Larger for TV */
+  font-size: 0.65rem;
   font-weight: bold;
-  border: 0.02rem solid #ffffff;
-  padding: 10px;
+  border: 0.01rem solid #ffffff;
+  padding: 4px;
 }
 
 td {
-  border: 0.02rem solid #333333; /* Darker borders */
-  background-color: #ffffff; /* Pure white background */
+  border: 0.01rem solid #ddd;
+  background-color: #ffffff;
 }
 
-/* Alternating row colors for better TV visibility */
-tr:nth-child(even) td {
-  background-color: #f8f9fa; /* Very light gray */
+.weekday-cell {
+  font-size: 0.6rem;
+  padding: 2px !important;
+  text-align: center;
 }
 
-tr:nth-child(odd) td {
-  background-color: #ffffff; /* Pure white */
+.weekday-name {
+  font-size: 0.6rem;
+  font-weight: 600;
 }
 
+.date-info {
+  font-size: 0.55rem;
+}
 
 .bg-green-500 {
-  background-color: #22c55e !important; /* Bright green */
-  color: #ffffff !important;
+  background-color: #22c55e !important;
+  color: #000000 !important; /* Changed from #ffffff to #000000 for black text */
   font-weight: bold !important;
-  border: 2px solid #16a34a !important;
-  border-radius: 4px;
-  padding: 8px !important;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid #16a34a !important;
+  border-radius: 2px;
+  padding: 2px !important;
 }
-
-.loading-message {
-  font-size: 1.5rem;
-  font-weight: bold;
-  text-align: center;
-  color: #1f2937;
-  padding: 20px;
-}
-/* Enhanced styling for Firebase changes */
 .bg-red-500 {
-  background-color: #dc2626 !important; /* Bright red for cancellations */
+  background-color: #dc2626 !important;
   color: #ffffff !important;
   font-weight: bold !important;
-  border: 2px solid #991b1b !important;
-  border-radius: 4px;
-  padding: 8px !important;
-  text-shadow: 1px 1px 2px rgba(0,0,0,0.5);
+  border: 1px solid #991b1b !important;
+  border-radius: 2px;
+  padding: 2px !important;
 }
 
 .bg-yellow-400 {
-  background-color: #facc15 !important; /* Bright yellow for changes */
+  background-color: #facc15 !important;
   color: #000000 !important;
   font-weight: bold !important;
-  border: 2px solid #eab308 !important;
-  border-radius: 4px;
-  padding: 8px !important;
-  text-shadow: 1px 1px 2px rgba(255,255,255,0.8);
+  border: 1px solid #eab308 !important;
+  border-radius: 2px;
+  padding: 2px !important;
 }
 
-/* Enhanced line-through styling */
 .line-through {
   text-decoration: line-through;
-  text-decoration-thickness: 2px;
+  text-decoration-thickness: 1px;
   text-decoration-color: #ef4444;
 }
 
-/* Better contrast for subject names */
 .font-bold {
   font-weight: 700;
-  color: #1f2937; /* Dark gray for better contrast */
+  font-size: 0.6rem;
 }
 
-/* High contrast mode for wall TV */
 .table-cell p {
-  margin: 2px 0;
-  line-height: 1.4;
+  margin: 1px 0;
+  line-height: 1.2;
+  font-size: 0.6rem;
 }
 
-/* Group name styling */
-.table-cell .font-bold {
-  font-size: 0.75rem;
-  color: #374151;
+.entry-container {
+  margin: 1px 0;
+  padding: 1px;
 }
 
-/* Subject ID styling */
-.table-cell {
-  font-size: 0.8rem;
-  color: #111827; /* Very dark for high contrast */
+.flex.flex-col + .flex.flex-col {
+  margin-top: 2px;
+  padding-top: 2px;
+  border-top: 1px dashed #d1d5db;
 }
 
-/* Hover effects for interactive elements (if needed) */
-.table-cell:hover {
-  background-color: #e5e7eb !important;
-  transition: background-color 0.2s ease;
-}
-
-/* Enhanced weekday column */
-.table-cell:first-child {
-  background-color: #f3f4f6 !important;
+.loading-message {
+  font-size: 1rem;
   font-weight: bold;
   text-align: center;
-  font-size: 0.75rem;
   color: #1f2937;
-}
-
-/* Make sure text is readable on all backgrounds */
-.flex.flex-col {
-  line-height: 1.3;
-}
-
-/* Ensure proper spacing between multiple entries */
-.flex.flex-col + .flex.flex-col {
-  margin-top: 4px;
-  padding-top: 4px;
-  border-top: 1px dashed #d1d5db;
+  padding: 10px;
 }
 </style>
