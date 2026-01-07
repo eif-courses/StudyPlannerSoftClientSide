@@ -405,7 +405,55 @@ function getAllSubgroupMatches(currentDate: string | number, baseClassid: string
       classroom,
       isMatch: areDatesEqual && isGroupMatch && isLectureEqual,
       isGroupEnglish: doesFirstWordEndWithE(classroom.grupe.trim()),
-      subgroupName: classroomGroup !== baseClassroomGroup ? classroomGroup : null,
+      subgroupName: classroomGroup !== baseGroupId ? classroomGroup : null,
+    };
+  });
+
+  return results.filter(result => result.isMatch);
+}
+
+// Function to get Firebase entries for subgroups that don't have any regular timetable entry
+function getUnmatchedSubgroupEntries(currentDate: string | number, baseClassid: string | number, index: number, regularEntries: any[]) {
+  const parseDateToUTC = (dateStr: string | number): string => {
+    const parsedDate = new Date(Date.parse(dateStr + " UTC"));
+    return parsedDate.toISOString().split('T')[0];
+  };
+
+  const formattedCurrentDate = parseDateToUTC(currentDate);
+  const baseGroupId = baseClassid.toString().split(' ')[0];
+
+  // Get all groupnames from regular entries for this timeslot
+  const regularGroupNames = new Set<string>();
+  regularEntries.forEach(entry => {
+    if (entry.groupnames) {
+      entry.groupnames.forEach((gn: string) => {
+        const fullGroup = (baseGroupId + ' ' + gn).replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
+        regularGroupNames.add(fullGroup);
+        // Also add just the base group in case there are no subgroups
+        regularGroupNames.add(baseGroupId);
+      });
+    }
+  });
+
+  const results = filteredTodos.value.map((classroom) => {
+    const formattedClassroomDate = parseDateToUTC(classroom.date);
+    const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
+
+    const classroomGroup = classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
+    const baseClassroomGroup = classroomGroup.split(' ')[0];
+
+    // Match if base groups are the same (catches subgroups)
+    const isGroupMatch = baseGroupId === baseClassroomGroup;
+    const isLectureEqual = classroom.paskaita === String(index + 1);
+
+    // Check if this Firebase entry's group is NOT covered by any regular entry
+    const isNotCoveredByRegular = !regularGroupNames.has(classroomGroup);
+
+    return {
+      classroom,
+      isMatch: areDatesEqual && isGroupMatch && isLectureEqual && isNotCoveredByRegular,
+      isGroupEnglish: doesFirstWordEndWithE(classroom.grupe.trim()),
+      subgroupName: classroomGroup !== baseGroupId ? classroomGroup : null,
     };
   });
 
@@ -656,6 +704,34 @@ onUnmounted(() => {
                       </template>
                     </p>
                   </div>
+                  <!-- Also check for Firebase entries for OTHER subgroups that don't have regular entries -->
+                  <template v-if="getUnmatchedSubgroupEntries(date, classid, index, getEntriesInTimeSlot(entries, timeSlot)).length > 0">
+                    <div
+                        v-for="(match, matchIndex) in getUnmatchedSubgroupEntries(date, classid, index, getEntriesInTimeSlot(entries, timeSlot))"
+                        :key="'unmatched-' + matchIndex"
+                        class="subgroup-entry"
+                    >
+                      <template v-if="match.classroom.auditorija === '-'">
+                        <div class="bg-red-500 text-white font-light p-1 rounded text-center">
+                          <div class="text-xs font-bold">{{ match.classroom.destytojas }}</div>
+                          <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
+                        </div>
+                      </template>
+                      <template v-else>
+                        <div class="bg-green-500 text-white font-light p-1 rounded text-center">
+                          <div class="text-xs font-semibold">{{ match.classroom.destytojas }}</div>
+                          <div class="font-bold text-xs">{{ match.classroom.auditorija }}</div>
+                          <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
+                          <div class="text-xs mt-1" v-if="!match.isGroupEnglish">
+                            Nauja paskaita
+                          </div>
+                          <div class="text-xs mt-1" v-else>
+                            New lecture
+                          </div>
+                        </div>
+                      </template>
+                    </div>
+                  </template>
                 </template>
 
                 <!-- No regular entries - check for Firebase-only changes (including subgroups) -->
