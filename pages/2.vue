@@ -154,10 +154,18 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
     let isGroupEqual = false;
     const groupId = classid.toString();
 
-    if (!groupId.includes('.')) {
-      isGroupEqual = groupId.trim() === classroom.grupe.trim();
+    // Normalize classroom group name for consistent comparison
+    const classroomGroup = classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
+    const baseGroupId = groupId.split(' ')[0];
+
+    if (!groupId.includes('.') && !groupId.includes(' ')) {
+      // Simple group matching - also match subgroups (e.g., "IS25" should match "IS25 I pogr.")
+      isGroupEqual = groupId.trim() === classroomGroup ||
+                     baseGroupId === classroomGroup ||
+                     classroomGroup.startsWith(baseGroupId + ' ');
     } else {
-      isGroupEqual = groupId.trim() === classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
+      // Complex group matching for cases with subgroups
+      isGroupEqual = groupId.trim() === classroomGroup;
     }
 
 
