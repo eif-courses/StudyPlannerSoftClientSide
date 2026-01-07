@@ -356,7 +356,10 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
 
     if (!groupId.includes('.') && !groupId.includes(' ')) {
       // Simple group matching for cases like "PI23E"
-      isGroupEqual = baseGroupId === classroomGroup || groupId === classroomGroup;
+      // Also match subgroups (e.g., "IS25" should match "IS25 I pogr." or "IS25 II pogr.")
+      isGroupEqual = baseGroupId === classroomGroup ||
+                     groupId === classroomGroup ||
+                     classroomGroup.startsWith(baseGroupId + ' ');
     } else {
       // Complex group matching for cases with subgroups
       isGroupEqual = groupId.trim() === classroomGroup;
