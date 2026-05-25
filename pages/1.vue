@@ -164,31 +164,6 @@ const fetchClassroomData = async (classroomIds: string[]) => {
         console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, result.reason);
       } else if (result.value) {
         finalClassrooms.value.push(...result.value); // Merge results
-
-
-
-        const newTimetableEntry: TimetableEntry = {
-          type: "Lecture",
-          date: "2024-10-29",
-          uniperiod: "7",
-          starttime: "19:30",
-          endtime: "20:45",
-          subjectid: "",
-          classids: ["PI23E"],
-          groupnames: [""],
-          igroupid: "GRP123",
-          teacherids: [""],
-          classroomids: [""],
-          colors: ["#FF5733"]
-        };
-
-        // Ensure nested structure exists at each level
-
-
-        // Append the new timetable entry
-        finalClassrooms.value.push(newTimetableEntry);
-
-
       }
     });
 
@@ -286,12 +261,19 @@ const fetchGroupIds = async () => {
 };
 
 
+const isBlankEntry = (e: TimetableEntry) =>
+  !e.subjectid?.trim() &&
+  !e.classroomids?.some(v => v?.trim()) &&
+  !e.groupnames?.some(v => v?.trim()) &&
+  !e.teacherids?.some(v => v?.trim());
+
 const groupAndSortClassrooms = () => {
   // Reset groupedClassrooms
   groupedClassrooms.value = {};
 
   // Group by classid, date, starttime, and endtime
   finalClassrooms.value.forEach((entry) => {
+    if (isBlankEntry(entry)) return;
     entry.classids.forEach(classid => {
       const entryDate = entry.date; // Use the date as the key
       const entryStartTime = entry.starttime; // Use the start time as the key
@@ -662,9 +644,12 @@ onUnmounted(() => {
                 <!-- Check if there are regular timetable entries -->
                 <template v-if="getEntriesInTimeSlot(entries, timeSlot).length > 0">
                   <!-- Regular entries exist - show them with Firebase checks -->
-                  <div
+                  <template
                       v-for="entry in getEntriesInTimeSlot(entries, timeSlot)"
                       :key="entry.subjectid + '-' + index"
+                  >
+                  <div
+                      v-if="!isBlankEntry(entry)"
                       class="flex flex-col entry-container"
                   >
                     <p>
@@ -704,6 +689,7 @@ onUnmounted(() => {
                       </template>
                     </p>
                   </div>
+                  </template>
                   <!-- Also check for Firebase entries for OTHER subgroups that don't have regular entries -->
                   <template v-if="getUnmatchedSubgroupEntries(date, classid, index, getEntriesInTimeSlot(entries, timeSlot)).length > 0">
                     <div
