@@ -164,6 +164,31 @@ const fetchClassroomData = async (classroomIds: string[]) => {
         console.error(`Error fetching classroom data for group ${classroomIds[index]}:`, result.reason);
       } else if (result.value) {
         finalClassrooms.value.push(...result.value); // Merge results
+
+
+
+        const newTimetableEntry: TimetableEntry = {
+          type: "Lecture",
+          date: "2024-10-29",
+          uniperiod: "7",
+          starttime: "19:30",
+          endtime: "20:45",
+          subjectid: "",
+          classids: ["PI23E"],
+          groupnames: [""],
+          igroupid: "GRP123",
+          teacherids: [""],
+          classroomids: [""],
+          colors: ["#FF5733"]
+        };
+
+        // Ensure nested structure exists at each level
+
+
+        // Append the new timetable entry
+        finalClassrooms.value.push(newTimetableEntry);
+
+
       }
     });
 
@@ -261,19 +286,12 @@ const fetchGroupIds = async () => {
 };
 
 
-const isBlankEntry = (e: TimetableEntry) =>
-  !e.subjectid?.trim() &&
-  !e.classroomids?.some(v => v?.trim()) &&
-  !e.groupnames?.some(v => v?.trim()) &&
-  !e.teacherids?.some(v => v?.trim());
-
 const groupAndSortClassrooms = () => {
   // Reset groupedClassrooms
   groupedClassrooms.value = {};
 
   // Group by classid, date, starttime, and endtime
   finalClassrooms.value.forEach((entry) => {
-    if (isBlankEntry(entry)) return;
     entry.classids.forEach(classid => {
       const entryDate = entry.date; // Use the date as the key
       const entryStartTime = entry.starttime; // Use the start time as the key
@@ -335,14 +353,10 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
     // More flexible group matching
     const baseGroupId = groupId.split(' ')[0]; // Get the main group ID (like "PI23E")
     const classroomGroup = classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
-    const baseClassroomGroup = classroomGroup.split(' ')[0]; // Get base group from Firebase entry
 
     if (!groupId.includes('.') && !groupId.includes(' ')) {
       // Simple group matching for cases like "PI23E"
-      // Also match subgroups (e.g., "IS25" should match "IS25 I pogr." or "IS25 II pogr.")
-      isGroupEqual = baseGroupId === classroomGroup ||
-                     groupId === classroomGroup ||
-                     classroomGroup.startsWith(baseGroupId + ' ');
+      isGroupEqual = baseGroupId === classroomGroup || groupId === classroomGroup;
     } else {
       // Complex group matching for cases with subgroups
       isGroupEqual = groupId.trim() === classroomGroup;
@@ -360,86 +374,6 @@ function shouldCheckClassroom(currentDate: string | number, classid: string | nu
 
   const matches = results.filter(result => result.isMatch);
   return matches.length > 0 ? matches[0] : null;
-}
-
-// Function to get ALL subgroup matches for a base group (for empty cells)
-function getAllSubgroupMatches(currentDate: string | number, baseClassid: string | number, index: number) {
-  const parseDateToUTC = (dateStr: string | number): string => {
-    const parsedDate = new Date(Date.parse(dateStr + " UTC"));
-    return parsedDate.toISOString().split('T')[0];
-  };
-
-  const formattedCurrentDate = parseDateToUTC(currentDate);
-  const baseGroupId = baseClassid.toString().split(' ')[0];
-
-  const results = filteredTodos.value.map((classroom) => {
-    const formattedClassroomDate = parseDateToUTC(classroom.date);
-    const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
-
-    const classroomGroup = classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
-    const baseClassroomGroup = classroomGroup.split(' ')[0];
-
-    // Match if base groups are the same (catches subgroups)
-    const isGroupMatch = baseGroupId === baseClassroomGroup;
-    const isLectureEqual = classroom.paskaita === String(index + 1);
-
-    return {
-      classroom,
-      isMatch: areDatesEqual && isGroupMatch && isLectureEqual,
-      isGroupEnglish: doesFirstWordEndWithE(classroom.grupe.trim()),
-      subgroupName: classroomGroup !== baseGroupId ? classroomGroup : null,
-    };
-  });
-
-  return results.filter(result => result.isMatch);
-}
-
-// Function to get Firebase entries for subgroups that don't have any regular timetable entry
-function getUnmatchedSubgroupEntries(currentDate: string | number, baseClassid: string | number, index: number, regularEntries: any[]) {
-  const parseDateToUTC = (dateStr: string | number): string => {
-    const parsedDate = new Date(Date.parse(dateStr + " UTC"));
-    return parsedDate.toISOString().split('T')[0];
-  };
-
-  const formattedCurrentDate = parseDateToUTC(currentDate);
-  const baseGroupId = baseClassid.toString().split(' ')[0];
-
-  // Get all groupnames from regular entries for this timeslot
-  const regularGroupNames = new Set<string>();
-  regularEntries.forEach(entry => {
-    if (entry.groupnames) {
-      entry.groupnames.forEach((gn: string) => {
-        const fullGroup = (baseGroupId + ' ' + gn).replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
-        regularGroupNames.add(fullGroup);
-        // Also add just the base group in case there are no subgroups
-        regularGroupNames.add(baseGroupId);
-      });
-    }
-  });
-
-  const results = filteredTodos.value.map((classroom) => {
-    const formattedClassroomDate = parseDateToUTC(classroom.date);
-    const areDatesEqual = formattedCurrentDate === formattedClassroomDate;
-
-    const classroomGroup = classroom.grupe.replace(/[\(\)]/g, "").replace("pogrupis", "pogr.").trim();
-    const baseClassroomGroup = classroomGroup.split(' ')[0];
-
-    // Match if base groups are the same (catches subgroups)
-    const isGroupMatch = baseGroupId === baseClassroomGroup;
-    const isLectureEqual = classroom.paskaita === String(index + 1);
-
-    // Check if this Firebase entry's group is NOT covered by any regular entry
-    const isNotCoveredByRegular = !regularGroupNames.has(classroomGroup);
-
-    return {
-      classroom,
-      isMatch: areDatesEqual && isGroupMatch && isLectureEqual && isNotCoveredByRegular,
-      isGroupEnglish: doesFirstWordEndWithE(classroom.grupe.trim()),
-      subgroupName: classroomGroup !== baseGroupId ? classroomGroup : null,
-    };
-  });
-
-  return results.filter(result => result.isMatch);
 }
 function doesFirstWordEndWithE(grupe: string): boolean {
   // Split the string into words based on spaces
@@ -644,12 +578,9 @@ onUnmounted(() => {
                 <!-- Check if there are regular timetable entries -->
                 <template v-if="getEntriesInTimeSlot(entries, timeSlot).length > 0">
                   <!-- Regular entries exist - show them with Firebase checks -->
-                  <template
+                  <div
                       v-for="entry in getEntriesInTimeSlot(entries, timeSlot)"
                       :key="entry.subjectid + '-' + index"
-                  >
-                  <div
-                      v-if="!isBlankEntry(entry)"
                       class="flex flex-col entry-container"
                   >
                     <p>
@@ -689,59 +620,24 @@ onUnmounted(() => {
                       </template>
                     </p>
                   </div>
-                  </template>
-                  <!-- Also check for Firebase entries for OTHER subgroups that don't have regular entries -->
-                  <template v-if="getUnmatchedSubgroupEntries(date, classid, index, getEntriesInTimeSlot(entries, timeSlot)).length > 0">
-                    <div
-                        v-for="(match, matchIndex) in getUnmatchedSubgroupEntries(date, classid, index, getEntriesInTimeSlot(entries, timeSlot))"
-                        :key="'unmatched-' + matchIndex"
-                        class="subgroup-entry"
-                    >
-                      <template v-if="match.classroom.auditorija === '-'">
-                        <div class="bg-red-500 text-white font-light p-1 rounded text-center">
-                          <div class="text-xs font-bold">{{ match.classroom.destytojas }}</div>
-                          <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
-                        </div>
-                      </template>
-                      <template v-else>
-                        <div class="bg-green-500 text-white font-light p-1 rounded text-center">
-                          <div class="text-xs font-semibold">{{ match.classroom.destytojas }}</div>
-                          <div class="font-bold text-xs">{{ match.classroom.auditorija }}</div>
-                          <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
-                          <div class="text-xs mt-1" v-if="!match.isGroupEnglish">
-                            Nauja paskaita
-                          </div>
-                          <div class="text-xs mt-1" v-else>
-                            New lecture
-                          </div>
-                        </div>
-                      </template>
-                    </div>
-                  </template>
                 </template>
 
-                <!-- No regular entries - check for Firebase-only changes (including subgroups) -->
+                <!-- No regular entries - check for Firebase-only changes -->
                 <template v-else>
-                  <template v-if="getAllSubgroupMatches(date, classid, index).length > 0">
-                    <div
-                        v-for="(match, matchIndex) in getAllSubgroupMatches(date, classid, index)"
-                        :key="matchIndex"
-                        class="subgroup-entry"
-                    >
-                      <template v-if="match.classroom.auditorija === '-'">
+                  <template v-if="shouldCheckClassroom(date, classid, index)">
+                    <template v-if="shouldCheckClassroom(date, classid, index)?.isMatch">
+                      <template v-if="shouldCheckClassroom(date, classid, index)?.classroom.auditorija === '-'">
                         <!-- Red highlight for no lecture in empty cell -->
                         <div class="bg-red-500 text-white font-light p-1 rounded text-center">
-                          <div class="text-xs font-bold">{{ match.classroom.destytojas }}</div>
-                          <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
+                          <div class="text-xs font-bold">{{ shouldCheckClassroom(date, classid, index)?.classroom.destytojas }}</div>
                         </div>
                       </template>
                       <template v-else>
                         <!-- Green highlight for new lecture in empty cell -->
                         <div class="bg-green-500 text-white font-light p-1 rounded text-center">
-                          <div class="text-xs font-semibold">{{ match.classroom.destytojas }}</div>
-                          <div class="font-bold text-xs">{{ match.classroom.auditorija }}</div>
-                          <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
-                          <div class="text-xs mt-1" v-if="!match.isGroupEnglish">
+                          <div class="text-xs font-semibold">{{ shouldCheckClassroom(date, classid, index)?.classroom.destytojas }}</div>
+                          <div class="font-bold text-xs">{{ shouldCheckClassroom(date, classid, index)?.classroom.auditorija }}</div>
+                          <div class="text-xs mt-1" v-if="!shouldCheckClassroom(date, classid, index)?.isGroupEnglish">
                             Nauja paskaita
                           </div>
                           <div class="text-xs mt-1" v-else>
@@ -749,7 +645,7 @@ onUnmounted(() => {
                           </div>
                         </div>
                       </template>
-                    </div>
+                    </template>
                   </template>
                   <!-- If no Firebase changes and no regular entries, show empty cell -->
                 </template>
@@ -887,15 +783,5 @@ td {
   text-align: center;
   color: #1f2937;
   padding: 10px;
-}
-
-.subgroup-entry {
-  margin: 2px 0;
-}
-
-.subgroup-entry + .subgroup-entry {
-  margin-top: 3px;
-  padding-top: 3px;
-  border-top: 1px dashed #d1d5db;
 }
 </style>
