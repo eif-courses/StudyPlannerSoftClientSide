@@ -666,7 +666,6 @@ onUnmounted(() => {
                         </template>
                         <template v-else>
                           <div class="bg-yellow-400 text-black font-light p-1">
-                            <span>{{ entry.subjectid }},</span>
                             <span class="font-bold">
                               {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.auditorija }} {{
                                 entry.groupnames.join(', ')
@@ -708,12 +707,6 @@ onUnmounted(() => {
                           <div class="text-xs font-semibold">{{ match.classroom.destytojas }}</div>
                           <div class="font-bold text-xs">{{ match.classroom.auditorija }}</div>
                           <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
-                          <div class="text-xs mt-1" v-if="!match.isGroupEnglish">
-                            Nauja paskaita
-                          </div>
-                          <div class="text-xs mt-1" v-else>
-                            New lecture
-                          </div>
                         </div>
                       </template>
                     </div>
@@ -741,12 +734,6 @@ onUnmounted(() => {
                           <div class="text-xs font-semibold">{{ match.classroom.destytojas }}</div>
                           <div class="font-bold text-xs">{{ match.classroom.auditorija }}</div>
                           <div class="text-xs" v-if="match.subgroupName">({{ match.subgroupName }})</div>
-                          <div class="text-xs mt-1" v-if="!match.isGroupEnglish">
-                            Nauja paskaita
-                          </div>
-                          <div class="text-xs mt-1" v-else>
-                            New lecture
-                          </div>
                         </div>
                       </template>
                     </div>
