@@ -671,12 +671,6 @@ onUnmounted(() => {
                                 entry.groupnames.join(', ')
                               }}, {{ shouldCheckClassroom(date, classid + ' ' + entry.groupnames.join(', '), index)?.classroom.destytojas }}
                             </span>
-                            <p v-if="!shouldCheckClassroom(date, classid +' '+ entry.groupnames.join(', '), index)?.isGroupEnglish">
-                              Pasikeitė auditorija
-                            </p>
-                            <p v-else>
-                              The classroom has changed
-                            </p>
                           </div>
                         </template>
                       </template>
