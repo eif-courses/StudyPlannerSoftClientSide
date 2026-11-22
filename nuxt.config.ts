@@ -4,7 +4,10 @@ import Aura from '@primevue/themes/aura';
 
 export default defineNuxtConfig({
   compatibilityDate: '2024-04-03',
-  devtools: { enabled: true },
+  devtools: { enabled: false },
+
+  // Static SPA: no Node server needed (hosted free on GitHub Pages)
+  ssr: false,
 
   runtimeConfig: {
     public: {
